@@ -83,20 +83,38 @@ pip install -e ".[dev]"
 ### 第一个示例
 
 ```python
-from sv_randomizer import Randomizable, RandVar, RandCVar, VarType
-from sv_randomizer.constraints.base import ExpressionConstraint
-from sv_randomizer.constraints.expressions import *
+from sv_randomizer import Randomizable, rand, randc, constraint
 
 class Packet(Randomizable):
-    def __init__(self):
-        super().__init__()
-        # 定义随机变量
-        self._rand_vars['src_addr'] = RandVar('src_addr', VarType.INT, 0, 65535)
-        self._rand_vars['dest_addr'] = RandVar('dest_addr', VarType.INT, 0, 65535)
-        self._randc_vars['packet_id'] = RandCVar('packet_id', VarType.BIT, bit_width=4)
+    # 定义随机变量 - 使用装饰器
+    @rand(bit_width=16, min_val=0, max_val=65535)
+    def src_addr(self):
+        return 0
 
-        # 添加约束：源地址必须 >= 0x1000
-        expr = BinaryExpr(
+    @rand(bit_width=16, min_val=0, max_val=65535)
+    def dest_addr(self):
+        return 0
+
+    @randc(bit_width=4)
+    def packet_id(self):
+        return 0
+
+    # 定义约束 - 使用字符串表达式（新！）
+    @constraint("valid_addr", "src_addr >= 0x1000 && src_addr != dest_addr")
+    def valid_addr_c(self):
+        pass
+
+# 使用
+pkt = Packet()
+for i in range(5):
+    pkt.randomize()
+    print(f"src=0x{pkt.src_addr:04x}, dst=0x{pkt.dest_addr:04x}, id={pkt.packet_id}")
+```
+
+**新语法亮点：**
+- `@rand/@randc` 装饰器定义随机变量，简洁直观
+- `@constraint("name", "expr")` 支持字符串表达式，更接近 SystemVerilog 语法
+- 完全向后兼容旧的函数形式约束
             VariableExpr('src_addr'),
             BinaryOp.GE,
             ConstantExpr(0x1000)
@@ -147,6 +165,7 @@ python .claude/skills/test-agent/runner.py --all
 ### 产品文档
 
 - 📖 [产品说明书](docs/product/PRODUCT_MANUAL.md) - 完整产品功能介绍和使用指南
+- 📖 [SystemVerilog覆盖率迁移指南](docs/product/SYSTEMVERILOG_COVERAGE_GUIDE.md) - SV到Python覆盖率语法对照
 - 📋 [API参考手册](docs/product/API_REFERENCE.md) - API接口详细说明（规划中）
 - 📘 [用户指南](docs/product/USER_GUIDE.md) - 快速入门和最佳实践（规划中）
 

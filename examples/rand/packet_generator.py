@@ -7,10 +7,11 @@
 import sys
 import os
 
-# 添加父目录到路径以导入sv_randomizer
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 添加项目根目录到路径
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, project_root)
 
-from sv_randomizer import Randomizable, rand, randc, constraint, VarProxy, inside, dist
+from sv_randomizer import Randomizable, rand, randc, constraint, VarProxy, inside
 from sv_randomizer.formatters import VerilogFormatter
 
 
@@ -25,9 +26,6 @@ class Packet(Randomizable):
     - packet_id: 包ID (randc, 4位，确保0-15不重复)
     - opcode: 操作码 (枚举)
     """
-
-    def __init__(self):
-        super().__init__()
 
     # 定义rand变量
     @rand(bit_width=16)
@@ -61,17 +59,18 @@ class Packet(Randomizable):
         """随机化后回调"""
         pass
 
-    # 定义约束
-    @constraint("valid_addr_range")
+    # 定义约束 - 使用字符串约束语法（新）
+    @constraint("valid_addr_range", "src_addr >= 0x1000 && src_addr <= 0xFFFF")
     def valid_addr_range_c(self):
         """地址范围约束：源地址必须在有效范围内"""
-        return (VarProxy("src_addr") >= 0x1000) & (VarProxy("src_addr") <= 0xFFFF)
+        pass
 
-    @constraint("addr_not_equal")
+    @constraint("addr_not_equal", "src_addr != dest_addr")
     def addr_not_equal_c(self):
         """源地址和目标地址不能相同"""
-        return VarProxy("src_addr") != VarProxy("dest_addr")
+        pass
 
+    # inside 约束仍然使用 DSL（暂时保持兼容）
     @constraint("valid_length")
     def valid_length_c(self):
         """长度约束：使用inside约束"""

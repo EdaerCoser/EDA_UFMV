@@ -194,7 +194,7 @@ class RandCVar:
 
         注意: 只有当Random实例真正改变时才重置值池
         """
-        # 只有Random实例真正改变时才重置值池
+        # 检查是否需要更新：对象不同，或者之前没有设置过Random实例
         if self._random is not rand:
             self._random = rand
             self._initialize_pool()

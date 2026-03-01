@@ -1,30 +1,30 @@
 """
 简单测试示例 - 验证基本功能
+
+使用装饰器 API 和字符串约束语法
 """
 
 import sys
 import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 添加项目根目录到路径
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, project_root)
 
-from sv_randomizer import Randomizable, RandVar, RandCVar, VarType
-from sv_randomizer.constraints.base import ExpressionConstraint
-from sv_randomizer.constraints.expressions import VariableExpr, ConstantExpr, BinaryExpr, BinaryOp
+from sv_randomizer import Randomizable, rand, randc, constraint
 
 
 class SimplePacket(Randomizable):
-    """简单的数据包类"""
+    """简单的数据包类 - 使用装饰器 API"""
 
-    def __init__(self):
-        super().__init__()
-        # 手动创建rand变量
-        self._rand_vars['addr'] = RandVar('addr', VarType.BIT, bit_width=16, min_val=0, max_val=65535)
-        self._randc_vars['id'] = RandCVar('id', VarType.BIT, bit_width=4)
+    @rand(bit_width=16, min_val=0, max_val=65535)
+    def addr(self):
+        """16位地址"""
+        return 0
 
-    def pre_randomize(self):
-        pass
-
-    def post_randomize(self):
-        pass
+    @randc(bit_width=4)
+    def id(self):
+        """4位循环ID (0-15，遍历完才重复)"""
+        return 0
 
 
 def test_basic_randomization():
@@ -59,22 +59,22 @@ def test_randc_cycle():
 
 
 def test_with_constraints():
-    """测试带约束的随机化"""
-    print("=== Test 3: With Constraints ===")
+    """测试带约束的随机化 - 使用字符串约束语法"""
+    print("=== Test 3: With String Constraints ===")
 
     class ConstrainedPacket(Randomizable):
-        def __init__(self):
-            super().__init__()
-            self._rand_vars['x'] = RandVar('x', VarType.INT, min_val=0, max_val=100)
-            self._rand_vars['y'] = RandVar('y', VarType.INT, min_val=0, max_val=100)
+        @rand(min_val=0, max_val=100)
+        def x(self):
+            return 0
 
-            # 添加约束: x + y < 100
-            expr = BinaryExpr(
-                BinaryExpr(VariableExpr('x'), BinaryOp.ADD, VariableExpr('y')),
-                BinaryOp.LT,
-                ConstantExpr(100)
-            )
-            self.add_constraint(ExpressionConstraint("sum_constraint", expr))
+        @rand(min_val=0, max_val=100)
+        def y(self):
+            return 0
+
+        # 字符串约束语法 (新)
+        @constraint('sum_constraint', 'x + y < 100')
+        def sum_c(self):
+            pass
 
     pkt = ConstrainedPacket()
 
@@ -86,7 +86,42 @@ def test_with_constraints():
     print()
 
 
+def test_complex_constraints():
+    """测试复杂约束"""
+    print("=== Test 4: Complex String Constraints ===")
+
+    class ComplexPacket(Randomizable):
+        @rand(min_val=0, max_val=1000)
+        def addr(self):
+            return 0
+
+        @rand(min_val=0, max_val=1000)
+        def data(self):
+            return 0
+
+        @rand(min_val=0, max_val=100)
+        def length(self):
+            return 0
+
+        # 多条件约束
+        @constraint('valid', 'addr >= 0x100 && addr <= 0xFFFF && data < 500 && length > 10')
+        def valid_c(self):
+            pass
+
+    pkt = ComplexPacket()
+
+    for i in range(5):
+        if pkt.randomize():
+            print(f"  addr=0x{pkt.addr:04x}, data={pkt.data}, length={pkt.length}")
+        else:
+            print(f"  FAILED to randomize")
+    print()
+
+
 if __name__ == "__main__":
     test_basic_randomization()
     test_randc_cycle()
     test_with_constraints()
+    test_complex_constraints()
+
+    print("\n=== All tests completed ===")

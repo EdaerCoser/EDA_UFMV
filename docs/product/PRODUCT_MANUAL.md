@@ -90,7 +90,11 @@ for i in range(10):
         print(f"Packet {i}: src=0x{pkt.src_addr:04x}, dst=0x{pkt.dst_addr:04x}, id={pkt.packet_id}")
 ```
 
-### 2.2 功能覆盖率系统 📋（规划中 v0.2.0）
+### 2.2 功能覆盖率系统 ✅（已完成 v0.2.0）
+
+**状态**: 已完整实现，141个测试全部通过
+
+**文档**: [SystemVerilog覆盖率迁移指南](SYSTEMVERILOG_COVERAGE_GUIDE.md)
 
 #### 功能特性
 

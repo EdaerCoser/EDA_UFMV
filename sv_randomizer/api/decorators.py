@@ -35,9 +35,8 @@ def rand(bit_width: int = 32, min_val: int = 0, max_val: Optional[int] = None, e
                 return "READ"
     """
     def decorator(func: Callable[[Any], Any]) -> property:
-        @property
         @wraps(func)
-        def wrapper(self) -> Any:
+        def getter(self) -> Any:
             var_name = func.__name__
 
             # 首次访问时创建RandVar
@@ -60,11 +59,11 @@ def rand(bit_width: int = 32, min_val: int = 0, max_val: Optional[int] = None, e
                 return self.__dict__[var_name]
             return func(self)
 
-        @wrapper.setter
-        def wrapper_setter(self, value: Any):
+        @wraps(func)
+        def setter(self, value: Any):
             self.__dict__[func.__name__] = value
 
-        return wrapper
+        return property(getter, setter)
     return decorator
 
 
@@ -89,9 +88,8 @@ def randc(bit_width: int = 8, enum_values: Optional[List[Any]] = None):
                 return "A"
     """
     def decorator(func: Callable[[Any], Any]) -> property:
-        @property
         @wraps(func)
-        def wrapper(self) -> Any:
+        def getter(self) -> Any:
             var_name = func.__name__
 
             # 首次访问时创建RandCVar
@@ -110,24 +108,34 @@ def randc(bit_width: int = 8, enum_values: Optional[List[Any]] = None):
                 return self.__dict__[var_name]
             return func(self)
 
-        @wrapper.setter
-        def wrapper_setter(self, value: Any):
+        @wraps(func)
+        def setter(self, value: Any):
             self.__dict__[func.__name__] = value
 
-        return wrapper
+        return property(getter, setter)
     return decorator
 
 
-def constraint(name: str):
+def constraint(name: str, expression: Optional[str] = None):
     """
-    约束装饰器
-
-    用于定义约束
+    约束装饰器 - 支持字符串表达式和函数形式
 
     Args:
         name: 约束名称
+        expression: 可选的字符串表达式
 
     示例:
+        # 字符串形式 (新，推荐)
+        class Packet(Randomizable):
+            @rand(bit_width=16)
+            def addr(self):
+                return 0
+
+            @constraint("valid_addr", "addr > 0x1000 && addr < 0xFFFF")
+            def valid_addr_c(self):
+                pass
+
+        # 函数形式 (旧，向后兼容)
         class Packet(Randomizable):
             @rand(bit_width=16)
             def addr(self):
@@ -135,21 +143,43 @@ def constraint(name: str):
 
             @constraint("valid_addr")
             def valid_addr_c(self):
-                # 使用VarProxy创建表达式
                 return VarProxy("addr") > 0x1000
+
+        # 混合形式 (函数返回字符串)
+        @constraint("valid")
+        def valid_c(self):
+            return "x > 10 && y < 20"
     """
-    def decorator(func: Callable[[Any], Union[Expression, bool]]) -> None:
+    def decorator(func: Callable[[Any], Union[Expression, bool, str]]) -> None:
         @wraps(func)
         def wrapper(self) -> None:
-            # 在randomize时调用func获取约束表达式
-            expr = func(self)
-            if expr is None:
-                return
+            # 优先使用装饰器参数中的字符串表达式
+            if expression is not None:
+                # 字符串表达式模式
+                from ..constraints.parser import parse_expression
+                try:
+                    expr = parse_expression(expression)
+                except Exception as e:
+                    raise ValueError(f"Failed to parse constraint expression '{expression}': {e}")
+            else:
+                # 函数模式 - 调用函数获取表达式
+                result = func(self)
+                if result is None:
+                    return
 
-            # 如果不是Expression对象，尝试转换
-            if not isinstance(expr, Expression):
-                from ..constraints.expressions import ConstantExpr
-                expr = ConstantExpr(expr)
+                # 如果函数返回字符串，解析它
+                if isinstance(result, str):
+                    from ..constraints.parser import parse_expression
+                    try:
+                        expr = parse_expression(result)
+                    except Exception as e:
+                        raise ValueError(f"Failed to parse constraint expression '{result}': {e}")
+                elif isinstance(result, Expression):
+                    expr = result
+                else:
+                    # 其他值转换为常量
+                    from ..constraints.expressions import ConstantExpr
+                    expr = ConstantExpr(result)
 
             constraint_obj = ExpressionConstraint(name, expr)
             self.add_constraint(constraint_obj)
@@ -157,6 +187,7 @@ def constraint(name: str):
         # 将约束函数存储为特殊属性
         wrapper._is_constraint = True
         wrapper._constraint_name = name
+        wrapper._constraint_expression = expression  # 存储字符串表达式
         return wrapper
     return decorator
 

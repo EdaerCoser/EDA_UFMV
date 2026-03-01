@@ -410,7 +410,7 @@ class PythonModelGenerator:
 
 ### 交付物
 
-- `sv_randomizer/parser/` 模块
+- `parser/` 模块（与sv_randomizer同级）
 - `examples/parser/` 示例代码
 - `tests/test_parser/` 单元测试
 - `docs/product/PARSER_GUIDE.md` 用户指南

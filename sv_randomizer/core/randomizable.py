@@ -229,7 +229,6 @@ class Randomizable:
                         if not constraint.check(context):
                             # randc值不满足约束，需要重新生成或返回失败
                             # 这里简化：返回False让用户知道约束冲突
-                            from ..utils.exceptions import ConstraintConflictError
                             raise ConstraintConflictError(
                                 f"Constraint '{constraint.name}' conflicts with randc variable values: {randc_values}"
                             )
@@ -320,11 +319,43 @@ class Randomizable:
         Returns:
             变量名到RandVar/RandCVar的字典
         """
+        # 首先收集装饰器定义的变量
+        self._collect_decorator_vars()
+
         active = {}
         for name, var in {**self._rand_vars, **self._randc_vars}.items():
             if self._var_modes.get(name, True):
                 active[name] = var
         return active
+
+    def _collect_decorator_vars(self) -> None:
+        """
+        收集装饰器定义的随机变量
+
+        遍历类的所有属性，找到 property 并尝试访问它们以触发变量创建
+        """
+        import inspect
+
+        # 获取类的所有属性
+        for name in dir(self):
+            if name.startswith('_'):
+                continue
+
+            attr = getattr(self.__class__, name, None)
+            if attr is None:
+                continue
+
+            # 检查是否是 property（rand/randc 装饰器创建的）
+            if isinstance(attr, property):
+                # 尝试访问 property 以触发变量创建
+                # 使用 __dict__ 检查是否已经有值，避免重复访问
+                if name not in self.__dict__:
+                    try:
+                        # 访问 property 会触发 getter，从而创建变量
+                        _ = getattr(self, name)
+                    except Exception:
+                        # 忽略访问失败的情况
+                        pass
 
     def _get_active_constraints(self) -> List[Constraint]:
         """
@@ -333,11 +364,46 @@ class Randomizable:
         Returns:
             约束列表
         """
+        # 首先收集装饰器定义的约束
+        self._collect_decorator_constraints()
+
         active = []
         for constraint in self._constraints:
             if self._constraint_modes.get(constraint.name, True) and constraint.is_enabled():
                 active.append(constraint)
         return active
+
+    def _collect_decorator_constraints(self) -> None:
+        """
+        收集装饰器定义的约束
+
+        遍历类的所有方法，找到带有 _is_constraint 属性的方法并调用它们
+        """
+        import inspect
+
+        # 获取所有方法（包括继承的）
+        for name in dir(self):
+            if name.startswith('_'):
+                continue
+
+            attr = getattr(self.__class__, name, None)
+            if attr is None:
+                continue
+
+            # 检查是否是约束装饰器定义的方法
+            if hasattr(attr, '_is_constraint'):
+                constraint_name = getattr(attr, '_constraint_name', name)
+
+                # 检查约束是否已经添加过
+                already_added = any(c.name == constraint_name for c in self._constraints)
+
+                if not already_added:
+                    try:
+                        # 调用约束方法来添加约束
+                        attr(self)
+                    except Exception:
+                        # 约束方法可能会在变量未初始化时失败，这是正常的
+                        pass
 
     def _build_inline_constraints(self, inline: Dict[str, Any]) -> List[Constraint]:
         """

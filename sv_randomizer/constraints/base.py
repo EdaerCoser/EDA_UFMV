@@ -128,3 +128,44 @@ class CompoundConstraint(Constraint):
     def __repr__(self) -> str:
         status = "enabled" if self.enabled else "disabled"
         return f"CompoundConstraint(name='{self.name}', {status}, mode={self.mode}, count={len(self.constraints)})"
+
+
+class FunctionConstraint(Constraint):
+    """
+    基于函数的约束
+
+    使用自定义函数来验证约束，适用于复杂的验证逻辑
+    """
+
+    def __init__(self, name: str, check_func):
+        """
+        Args:
+            name: 约束名称
+            check_func: 验证函数，签名 (context: Dict[str, Any]) -> bool
+        """
+        super().__init__(name, expr=None)
+        self.check_func = check_func
+
+    def check(self, context: Dict[str, Any]) -> bool:
+        """
+        使用自定义函数检查约束
+
+        Args:
+            context: 变量名到值的映射
+
+        Returns:
+            约束函数的返回值
+        """
+        if not self.enabled:
+            return True
+
+        try:
+            result = self.check_func(context)
+            return bool(result)
+        except Exception:
+            # 如果验证函数出错，假设约束不满足
+            return False
+
+    def __repr__(self) -> str:
+        status = "enabled" if self.enabled else "disabled"
+        return f"FunctionConstraint(name='{self.name}', {status}, func={self.check_func.__name__ if hasattr(self.check_func, '__name__') else 'lambda'}"

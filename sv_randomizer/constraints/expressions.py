@@ -76,8 +76,8 @@ class Expression(ABC):
         """| 运算符重载"""
         return BinaryExpr(self, BinaryOp.OR, other)
 
-    def __and___(self, other: "Expression") -> "BinaryExpr":
-        """&& 运算符"""
+    def __and__(self, other: "Expression") -> "BinaryExpr":
+        """&& 运算符 (按位与)"""
         return BinaryExpr(self, BinaryOp.AND, other)
 
     def __or__(self, other: "Expression") -> "BinaryExpr":
@@ -269,8 +269,12 @@ class BinaryExpr(Expression):
         elif self.op == BinaryOp.MUL:
             return left_val * right_val
         elif self.op == BinaryOp.DIV:
+            if right_val == 0:
+                raise ZeroDivisionError(f"Division by zero in expression: {self}")
             return left_val // right_val  # 整数除法
         elif self.op == BinaryOp.MOD:
+            if right_val == 0:
+                raise ZeroDivisionError(f"Modulo by zero in expression: {self}")
             return left_val % right_val
 
         # 位运算符
