@@ -1,5 +1,5 @@
 """
-随机种子控制功能演示
+随机种子控制功能演示 - 新API版本
 
 演示如何使用随机种子控制功能来确保测试的可重复性
 """
@@ -8,32 +8,21 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from sv_randomizer import (
-    Randomizable, RandVar, RandCVar, VarType,
-    set_global_seed, get_global_seed, reset_global_seed
-)
-from sv_randomizer.constraints.base import ExpressionConstraint
-from sv_randomizer.constraints.expressions import (
-    VariableExpr, ConstantExpr, BinaryExpr, BinaryOp
-)
+from sv_randomizer import Randomizable, seed
+from sv_randomizer.api import rand, randc, constraint
 
 
 class DataPacket(Randomizable):
-    """数据包类，包含地址、长度和数据字段"""
+    """数据包类，包含地址、长度和数据字段 - 使用新API"""
 
-    def __init__(self, seed=None):
-        super().__init__(seed=seed)
-        self._rand_vars['addr'] = RandVar('addr', VarType.INT, min_val=0, max_val=65535)
-        self._rand_vars['length'] = RandVar('length', VarType.INT, min_val=1, max_val=256)
-        self._randc_vars['id'] = RandCVar('id', VarType.BIT, bit_width=4)
+    addr: rand[int](min=0, max=65535)
+    length: rand[int](min=1, max=256)
+    id: randc[int](bits=4)
 
-        # 添加约束：addr + length < 1000
-        expr = BinaryExpr(
-            BinaryExpr(VariableExpr('addr'), BinaryOp.ADD, VariableExpr('length')),
-            BinaryOp.LT,
-            ConstantExpr(1000)
-        )
-        self.add_constraint(ExpressionConstraint("addr_length_sum", expr))
+    @constraint
+    def addr_length_sum(self):
+        """约束：addr + length < 1000"""
+        return self.addr + self.length < 1000
 
 
 def demo_global_seed():
@@ -43,7 +32,7 @@ def demo_global_seed():
     print("=" * 60)
 
     # 设置全局种子
-    set_global_seed(42)
+    seed(42)
 
     print("\n使用全局种子42生成5个数据包:")
     for i in range(5):
@@ -52,8 +41,9 @@ def demo_global_seed():
         print(f"  包{i+1}: addr={pkt.addr:5d}, length={pkt.length:3d}, id={pkt.id:2d}")
 
     # 重置全局种子并再次生成
+    from sv_randomizer import reset_global_seed
     reset_global_seed()
-    set_global_seed(42)
+    seed(42)
 
     print("\n重置全局种子为42，再次生成5个数据包（应相同）:")
     for i in range(5):
@@ -71,14 +61,16 @@ def demo_object_seed():
     print("=" * 60)
 
     print("\n使用对象级种子123生成数据:")
-    pkt = DataPacket(seed=123)
+    pkt = DataPacket()
+    pkt.set_seed(123)
 
     for i in range(5):
         pkt.randomize()
         print(f"  次数{i+1}: addr={pkt.addr:5d}, length={pkt.length:3d}, id={pkt.id:2d}")
 
     print("\n使用相同种子123创建新对象（应重复序列）:")
-    pkt2 = DataPacket(seed=123)
+    pkt2 = DataPacket()
+    pkt2.set_seed(123)
     for i in range(5):
         pkt2.randomize()
         print(f"  次数{i+1}: addr={pkt2.addr:5d}, length={pkt2.length:3d}, id={pkt2.id:2d}")
@@ -90,7 +82,8 @@ def demo_temporary_seed():
     print("演示3: 临时种子")
     print("=" * 60)
 
-    pkt = DataPacket(seed=42)
+    pkt = DataPacket()
+    pkt.set_seed(42)
 
     print("\n正常randomize（使用对象种子42）:")
     pkt.randomize()
@@ -118,7 +111,8 @@ def demo_randc_cycle():
     print("演示4: RandCVar完整循环（4位 = 16个值）")
     print("=" * 60)
 
-    pkt = DataPacket(seed=42)
+    pkt = DataPacket()
+    pkt.set_seed(42)
 
     print("\n生成16个唯一ID:")
     seen = []
@@ -151,7 +145,8 @@ def demo_reproducibility():
     failed_seed = int(time.time()) % 10000
 
     print(f"\n模拟测试运行，种子={failed_seed}")
-    pkt = DataPacket(seed=failed_seed)
+    pkt = DataPacket()
+    pkt.set_seed(failed_seed)
     pkt.randomize()
 
     # 模拟"失败"条件
@@ -160,7 +155,8 @@ def demo_reproducibility():
         print(f"  记录种子: {failed_seed}")
 
     print("\n使用记录的种子重现问题:")
-    pkt2 = DataPacket(seed=failed_seed)
+    pkt2 = DataPacket()
+    pkt2.set_seed(failed_seed)
     pkt2.randomize()
     print(f"  重现: addr={pkt2.addr}, length={pkt2.length}")
 
@@ -191,7 +187,7 @@ def demo_set_seed_method():
 
 if __name__ == "__main__":
     print("\n" + "=" * 60)
-    print("随机种子控制功能演示")
+    print("随机种子控制功能演示 (新API)")
     print("=" * 60)
 
     demo_global_seed()

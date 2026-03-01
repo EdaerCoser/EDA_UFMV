@@ -1,5 +1,5 @@
 """
-六元一次方程组约束求解测试
+六元一次方程组约束求解测试 - 新API版本
 
 测试复杂约束下的随机化，并验证种子功能
 """
@@ -8,88 +8,57 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from sv_randomizer import (
-    Randomizable, RandVar, VarType,
-    set_global_seed, get_global_seed, reset_global_seed
-)
-from sv_randomizer.constraints.base import ExpressionConstraint
-from sv_randomizer.constraints.expressions import (
-    VariableExpr, ConstantExpr, BinaryExpr, BinaryOp
-)
+from sv_randomizer import Randomizable, seed
+from sv_randomizer.api import rand, constraint
 
 
 class SixVariableSystem(Randomizable):
     """
-    六元一次方程组求解器
+    六元一次方程组求解器 - 使用新API
 
     变量：x1, x2, x3, x4, x5, x6
     取值范围：约1000左右
     """
 
-    def __init__(self, seed=None):
-        super().__init__(seed=seed)
+    # 定义6个变量，范围在0-2000之间
+    x1: rand[int](min=0, max=2000)
+    x2: rand[int](min=0, max=2000)
+    x3: rand[int](min=0, max=2000)
+    x4: rand[int](min=0, max=2000)
+    x5: rand[int](min=0, max=2000)
+    x6: rand[int](min=0, max=2000)
 
-        # 定义6个变量，范围在0-2000之间
-        for i in range(1, 7):
-            var_name = f"x{i}"
-            self._rand_vars[var_name] = RandVar(
-                var_name,
-                VarType.INT,
-                min_val=0,
-                max_val=2000
-            )
+    # 定义约束 - 使用原生Python表达式
 
-        # 约束1: 所有变量 > 100
-        for i in range(1, 7):
-            var_name = f"x{i}"
-            expr = BinaryExpr(
-                VariableExpr(var_name),
-                BinaryOp.GT,
-                ConstantExpr(100)
-            )
-            self.add_constraint(ExpressionConstraint(f"{var_name}_gt_100", expr))
+    @constraint
+    def all_gt_100(self):
+        """约束1: 所有变量 > 100"""
+        return self.x1 > 100 and self.x2 > 100 and self.x3 > 100 and self.x4 > 100 and self.x5 > 100 and self.x6 > 100
 
-        # 约束2: x1 + x2 + x3 + x4 + x5 + x6 < 6000
-        sum_expr = VariableExpr("x1")
-        for var in ["x2", "x3", "x4", "x5", "x6"]:
-            sum_expr = BinaryExpr(sum_expr, BinaryOp.ADD, VariableExpr(var))
+    @constraint
+    def sum_lt_6000(self):
+        """约束2: x1 + x2 + x3 + x4 + x5 + x6 < 6000"""
+        return self.x1 + self.x2 + self.x3 + self.x4 + self.x5 + self.x6 < 6000
 
-        constraint_sum = BinaryExpr(sum_expr, BinaryOp.LT, ConstantExpr(6000))
-        self.add_constraint(ExpressionConstraint("sum_lt_6000", constraint_sum))
+    @constraint
+    def x1_x2_gt_1000(self):
+        """约束3: x1 + x2 > 1000"""
+        return self.x1 + self.x2 > 1000
 
-        # 约束3: x1 + x2 > 1000
-        x1_x2_sum = BinaryExpr(
-            VariableExpr("x1"),
-            BinaryOp.ADD,
-            VariableExpr("x2")
-        )
-        constraint_x1_x2 = BinaryExpr(x1_x2_sum, BinaryOp.GT, ConstantExpr(1000))
-        self.add_constraint(ExpressionConstraint("x1_x2_gt_1000", constraint_x1_x2))
+    @constraint
+    def x5_x6_lt_500k(self):
+        """约束4: x5 * x6 < 500000"""
+        return self.x5 * self.x6 < 500000
 
-        # 约束4: x5 * x6 < 500000
-        x5_x6_product = BinaryExpr(
-            VariableExpr("x5"),
-            BinaryOp.MUL,
-            VariableExpr("x6")
-        )
-        constraint_x5_x6 = BinaryExpr(x5_x6_product, BinaryOp.LT, ConstantExpr(500000))
-        self.add_constraint(ExpressionConstraint("x5_x6_lt_500k", constraint_x5_x6))
+    @constraint
+    def decreasing_sequence(self):
+        """约束5: x3 >= x4 >= x5 (递减序列)"""
+        return self.x3 >= self.x4 >= self.x5
 
-        # 约束5: x3 >= x4 >= x5 (递减序列)
-        self.add_constraint(ExpressionConstraint(
-            "x3_ge_x4",
-            BinaryExpr(VariableExpr("x3"), BinaryOp.GE, VariableExpr("x4"))
-        ))
-        self.add_constraint(ExpressionConstraint(
-            "x4_ge_x5",
-            BinaryExpr(VariableExpr("x4"), BinaryOp.GE, VariableExpr("x5"))
-        ))
-
-        # 约束6: x6 在 [200, 800] 范围内
-        x6_ge_200 = BinaryExpr(VariableExpr("x6"), BinaryOp.GE, ConstantExpr(200))
-        x6_le_800 = BinaryExpr(VariableExpr("x6"), BinaryOp.LE, ConstantExpr(800))
-        x6_range = BinaryExpr(x6_ge_200, BinaryOp.AND, x6_le_800)
-        self.add_constraint(ExpressionConstraint("x6_range", x6_range))
+    @constraint
+    def x6_range(self):
+        """约束6: x6 在 [200, 800] 范围内"""
+        return 200 <= self.x6 <= 800
 
 
 def test_with_seed(seed_value, num_solutions=5):
@@ -97,7 +66,8 @@ def test_with_seed(seed_value, num_solutions=5):
     print(f"\n使用种子 {seed_value} 生成 {num_solutions} 个解:")
     print("=" * 70)
 
-    solver = SixVariableSystem(seed=seed_value)
+    solver = SixVariableSystem()
+    solver.set_seed(seed_value)
 
     solutions = []
     attempts = 0
@@ -154,15 +124,15 @@ def test_reproducibility():
     print("可重现性测试：相同种子应产生相同结果")
     print("=" * 70)
 
-    seed = 12345
+    seed_value = 12345
 
     # 第一次生成
-    print(f"\n第一次运行（种子={seed}）:")
-    solutions1 = test_with_seed(seed, num_solutions=3)
+    print(f"\n第一次运行（种子={seed_value}）:")
+    solutions1 = test_with_seed(seed_value, num_solutions=3)
 
     # 第二次生成（使用相同种子）
-    print(f"\n第二次运行（种子={seed}）:")
-    solutions2 = test_with_seed(seed, num_solutions=3)
+    print(f"\n第二次运行（种子={seed_value}）:")
+    solutions2 = test_with_seed(seed_value, num_solutions=3)
 
     # 验证一致性
     print("\n验证结果:")
@@ -194,7 +164,7 @@ def test_reproducibility():
 
 def main():
     print("=" * 70)
-    print("六元一次方程组约束求解测试")
+    print("六元一次方程组约束求解测试 (新API)")
     print("=" * 70)
 
     print("\n问题定义:")
@@ -211,8 +181,8 @@ def main():
     # 测试三个不同的种子
     seeds = [11111, 22222, 33333]
 
-    for seed in seeds:
-        test_with_seed(seed, num_solutions=3)
+    for seed_value in seeds:
+        test_with_seed(seed_value, num_solutions=3)
 
     # 测试可重现性
     test_reproducibility()

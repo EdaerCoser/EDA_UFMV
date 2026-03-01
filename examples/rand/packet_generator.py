@@ -1,7 +1,7 @@
 """
-数据包生成示例
+数据包生成示例 - 新API版本
 
-演示如何使用SV Randomizer生成随机网络数据包
+演示如何使用SV Randomizer v0.3+的新类型注解API生成随机网络数据包
 """
 
 import sys
@@ -11,46 +11,42 @@ import os
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, project_root)
 
-from sv_randomizer import Randomizable, rand, randc, constraint, VarProxy, inside
+from sv_randomizer import Randomizable, seed
+from sv_randomizer.api import rand, randc, constraint
 from sv_randomizer.formatters import VerilogFormatter
 
 
 class Packet(Randomizable):
     """
-    网络数据包类
+    网络数据包类 - 使用新API
 
     包含以下字段：
     - src_addr: 源地址 (16位)
     - dest_addr: 目标地址 (16位)
     - length: 数据长度 (8位)
     - packet_id: 包ID (randc, 4位，确保0-15不重复)
-    - opcode: 操作码 (枚举)
     """
 
-    # 定义rand变量
-    @rand(bit_width=16)
-    def src_addr(self):
-        return 0
+    # 变量声明 - 使用类型注解
+    src_addr: rand[int](bits=16, min=0x1000, max=0xFFFF)
+    dest_addr: rand[int](bits=16)
+    length: rand[int](bits=8, min=64, max=1500)
+    packet_id: randc[int](bits=4)
 
-    @rand(bit_width=16)
-    def dest_addr(self):
-        return 0
+    # 约束 - 使用原生Python表达式
+    @constraint
+    def addr_not_equal(self):
+        """源地址和目标地址不能相同"""
+        return self.src_addr != self.dest_addr
 
-    @rand(bit_width=8, min_val=0, max_val=1500)
-    def length(self):
-        return 64
+    @constraint
+    def valid_length_range(self):
+        """长度必须在有效范围内"""
+        return (self.length == 64 or
+                self.length == 128 or
+                self.length == 256 or
+                (512 <= self.length <= 1518))
 
-    # 定义randc变量 - 确保ID唯一
-    @randc(bit_width=4)
-    def packet_id(self):
-        return 0
-
-    # 定义枚举类型的rand变量
-    @rand(enum_values=["READ", "WRITE", "ACK", "NACK"])
-    def opcode(self):
-        return "READ"
-
-    # 回调函数
     def pre_randomize(self):
         """随机化前回调"""
         pass
@@ -58,23 +54,6 @@ class Packet(Randomizable):
     def post_randomize(self):
         """随机化后回调"""
         pass
-
-    # 定义约束 - 使用字符串约束语法（新）
-    @constraint("valid_addr_range", "src_addr >= 0x1000 && src_addr <= 0xFFFF")
-    def valid_addr_range_c(self):
-        """地址范围约束：源地址必须在有效范围内"""
-        pass
-
-    @constraint("addr_not_equal", "src_addr != dest_addr")
-    def addr_not_equal_c(self):
-        """源地址和目标地址不能相同"""
-        pass
-
-    # inside 约束仍然使用 DSL（暂时保持兼容）
-    @constraint("valid_length")
-    def valid_length_c(self):
-        """长度约束：使用inside约束"""
-        return inside([(64, 64), (128, 255), (512, 1518)]) == VarProxy("length")
 
 
 def generate_packets(num_packets: int = 10):
@@ -98,7 +77,6 @@ def generate_packets(num_packets: int = 10):
             print(f"  Dest Addr:   0x{pkt.dest_addr:04x}")
             print(f"  Length:      {pkt.length}")
             print(f"  Packet ID:   {pkt.packet_id}")
-            print(f"  Opcode:      {pkt.opcode}")
 
             # 输出Verilog格式
             verilog = formatter.format(pkt)
@@ -139,7 +117,7 @@ def demonstrate_constraints():
     print("1. Basic randomization:")
     pkt = Packet()
     pkt.randomize()
-    print(f"   Addr: 0x{pkt.src_addr:04x}, ID: {pkt.packet_id}, Opcode: {pkt.opcode}\n")
+    print(f"   Addr: 0x{pkt.src_addr:04x}, ID: {pkt.packet_id}\n")
 
     # 2. 使用内联约束
     print("2. With inline constraint (src_addr = 0x2000):")
@@ -148,7 +126,6 @@ def demonstrate_constraints():
 
     # 3. 禁用约束
     print("3. With addr_not_equal constraint disabled:")
-    pkt.addr_not_equal_c()
     pkt.constraint_mode("addr_not_equal", False)
     pkt.randomize()
     print(f"   Src: 0x{pkt.src_addr:04x}, Dest: 0x{pkt.dest_addr:04x}")
@@ -167,38 +144,35 @@ def demonstrate_constraints():
     print(f"\n   Unique IDs: {len(seen)}")
 
 
-def demonstrate_solver_backends():
-    """演示不同求解器后端"""
-    print("\n=== Demonstrating Solver Backends ===\n")
+def demonstrate_seed_control():
+    """演示seed控制"""
+    print("\n=== Demonstrating Seed Control ===\n")
 
-    from sv_randomizer.solvers import SolverFactory
+    # 设置全局seed
+    seed(42)
+    print("1. Using global seed(42):")
+    pkt1 = Packet()
+    pkt1.randomize()
+    print(f"   Addr: 0x{pkt1.src_addr:04x}")
 
-    # 列出可用的后端
-    print(f"Available backends: {SolverFactory.list_backends()}")
-    print(f"Default backend: {SolverFactory.get_default_backend()}\n")
+    seed(42)
+    pkt2 = Packet()
+    pkt2.randomize()
+    print(f"   Addr: 0x{pkt2.src_addr:04x} (same seed, same value)")
 
-    # 使用PurePython后端
-    print("Using PurePython backend:")
-    pkt = Packet()
-    pkt.set_solver_backend("pure_python")
-    for i in range(3):
-        pkt.randomize()
-        print(f"  Packet {i+1}: addr=0x{pkt.src_addr:04x}, id={pkt.packet_id}")
+    # 使用实例级seed
+    print("\n2. Using instance-level seed:")
+    pkt3 = Packet()
+    pkt3.randomize(seed=100)
+    print(f"   Addr: 0x{pkt3.src_addr:04x}")
 
-    # 尝试使用Z3后端（如果可用）
-    if SolverFactory.is_backend_available("z3"):
-        print("\nUsing Z3 backend:")
-        pkt.set_solver_backend("z3")
-        for i in range(3):
-            pkt.randomize()
-            print(f"  Packet {i+1}: addr=0x{pkt.src_addr:04x}, id={pkt.packet_id}")
-    else:
-        print("\nZ3 backend not available. Install with: pip install z3-solver")
+    pkt3.randomize(seed=100)
+    print(f"   Addr: 0x{pkt3.src_addr:04x} (same seed, same value)")
 
 
 if __name__ == "__main__":
     print("=" * 60)
-    print("SV Randomizer - Packet Generator Example")
+    print("SV Randomizer - Packet Generator Example (New API)")
     print("=" * 60)
     print()
 
@@ -217,8 +191,8 @@ if __name__ == "__main__":
     # 演示约束
     demonstrate_constraints()
 
-    # 演示求解器后端
-    demonstrate_solver_backends()
+    # 演示seed控制
+    demonstrate_seed_control()
 
     print("\n" + "=" * 60)
     print("Example completed!")

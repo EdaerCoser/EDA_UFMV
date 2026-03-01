@@ -1,5 +1,5 @@
 """
-使用SV Randomizer求解五元一次不等式组
+使用SV Randomizer求解五元一次不等式组 - 新API版本
 
 示例问题：
 求解满足以下条件的五元组 (x1, x2, x3, x4, x5)：
@@ -16,88 +16,52 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from sv_randomizer import Randomizable, RandVar, VarType
-from sv_randomizer.constraints.base import ExpressionConstraint
-from sv_randomizer.constraints.expressions import (
-    VariableExpr, ConstantExpr, BinaryExpr, BinaryOp
-)
+from sv_randomizer import Randomizable
+from sv_randomizer.api import rand, constraint
 
 
 class FiveVariableInequality(Randomizable):
-    """五元一次不等式求解器"""
+    """五元一次不等式求解器 - 使用新API"""
 
-    def __init__(self):
-        super().__init__()
+    # 定义5个变量：x1, x2, x3, x4, x5
+    x1: rand[int](min=1, max=99)
+    x2: rand[int](min=1, max=99)
+    x3: rand[int](min=1, max=99)
+    x4: rand[int](min=1, max=99)
+    x5: rand[int](min=1, max=99)
 
-        # 定义5个变量：x1, x2, x3, x4, x5
-        # 范围：1-99
-        for i in range(1, 6):
-            var_name = f"x{i}"
-            self._rand_vars[var_name] = RandVar(
-                var_name,
-                VarType.INT,
-                min_val=1,
-                max_val=99
-            )
+    # 定义约束 - 使用原生Python表达式
 
-        # 定义约束
+    @constraint
+    def sum_less_than_100(self):
+        """约束1: x1 + x2 + x3 + x4 + x5 < 100"""
+        return self.x1 + self.x2 + self.x3 + self.x4 + self.x5 < 100
 
-        # 约束1: x1 + x2 + x3 + x4 + x5 < 100
-        sum_expr = VariableExpr("x1")
-        for var in ["x2", "x3", "x4", "x5"]:
-            sum_expr = BinaryExpr(sum_expr, BinaryOp.ADD, VariableExpr(var))
+    @constraint
+    def all_positive(self):
+        """约束2: 所有变量 > 0"""
+        return self.x1 > 0 and self.x2 > 0 and self.x3 > 0 and self.x4 > 0 and self.x5 > 0
 
-        constraint1 = ExpressionConstraint(
-            "sum_less_than_100",
-            BinaryExpr(sum_expr, BinaryOp.LT, ConstantExpr(100))
-        )
-        self.add_constraint(constraint1)
+    @constraint
+    def decreasing_sequence(self):
+        """约束3: x1 >= x2 >= x3 >= x4 >= x5 (递减序列)"""
+        return self.x1 >= self.x2 >= self.x3 >= self.x4 >= self.x5
 
-        # 约束2: 所有变量 > 0
-        for i in range(1, 6):
-            c = ExpressionConstraint(
-                f"x{i}_positive",
-                BinaryExpr(VariableExpr(f"x{i}"), BinaryOp.GT, ConstantExpr(0))
-            )
-            self.add_constraint(c)
+    @constraint
+    def x1_x2_greater_than_50(self):
+        """约束4: x1 + x2 > 50"""
+        return self.x1 + self.x2 > 50
 
-        # 约束3: x1 >= x2 >= x3 >= x4 >= x5 (递减序列)
-        self.add_constraint(ExpressionConstraint(
-            "x1_ge_x2",
-            BinaryExpr(VariableExpr("x1"), BinaryOp.GE, VariableExpr("x2"))
-        ))
-        self.add_constraint(ExpressionConstraint(
-            "x2_ge_x3",
-            BinaryExpr(VariableExpr("x2"), BinaryOp.GE, VariableExpr("x3"))
-        ))
-        self.add_constraint(ExpressionConstraint(
-            "x3_ge_x4",
-            BinaryExpr(VariableExpr("x3"), BinaryOp.GE, VariableExpr("x4"))
-        ))
-        self.add_constraint(ExpressionConstraint(
-            "x4_ge_x5",
-            BinaryExpr(VariableExpr("x4"), BinaryOp.GE, VariableExpr("x5"))
-        ))
-
-        # 约束4: x1 + x2 > 50
-        x1_x2_sum = BinaryExpr(VariableExpr("x1"), BinaryOp.ADD, VariableExpr("x2"))
-        self.add_constraint(ExpressionConstraint(
-            "x1_x2_greater_than_50",
-            BinaryExpr(x1_x2_sum, BinaryOp.GT, ConstantExpr(50))
-        ))
-
-        # 约束5: x4 + x5 < 20
-        x4_x5_sum = BinaryExpr(VariableExpr("x4"), BinaryOp.ADD, VariableExpr("x5"))
-        self.add_constraint(ExpressionConstraint(
-            "x4_x5_less_than_20",
-            BinaryExpr(x4_x5_sum, BinaryOp.LT, ConstantExpr(20))
-        ))
+    @constraint
+    def x4_x5_less_than_20(self):
+        """约束5: x4 + x5 < 20"""
+        return self.x4 + self.x5 < 20
 
 
 def solve_and_display():
     """求解并显示结果"""
     print("=" * 70)
-    print("五元一次不等式求解")
+    print("五元一次不等式求解 (新API)")
     print("=" * 70)
     print("\n问题：求解满足以下条件的五元组 (x1, x2, x3, x4, x5)")
     print()
@@ -166,28 +130,29 @@ def solve_custom_inequality():
     print("=" * 70)
     print("\n示例：求 2a + 3b - c < 50，其中 a>0, b>0, c>0, a<b<c\n")
 
+    a_rand = rand[int](min=1, max=30)
+    b_rand = rand[int](min=1, max=30)
+    c_rand = rand[int](min=1, max=50)
+
     class CustomInequality(Randomizable):
-        def __init__(self):
-            super().__init__()
-            self._rand_vars['a'] = RandVar('a', VarType.INT, min_val=1, max_val=30)
-            self._rand_vars['b'] = RandVar('b', VarType.INT, min_val=1, max_val=30)
-            self._rand_vars['c'] = RandVar('c', VarType.INT, min_val=1, max_val=50)
+        a: a_rand
+        b: b_rand
+        c: c_rand
 
-            # 2a + 3b - c < 50
-            expr = BinaryExpr(
-                BinaryExpr(
-                    BinaryExpr(ConstantExpr(2), BinaryOp.MUL, VariableExpr('a')),
-                    BinaryOp.ADD,
-                    BinaryExpr(ConstantExpr(3), BinaryOp.MUL, VariableExpr('b'))
-                ),
-                BinaryOp.SUB,
-                VariableExpr('c')
-            )
-            self.add_constraint(ExpressionConstraint("main", BinaryExpr(expr, BinaryOp.LT, ConstantExpr(50))))
+        @constraint
+        def main_constraint(self):
+            """2a + 3b - c < 50"""
+            return 2 * self.a + 3 * self.b - self.c < 50
 
-            # a < b < c
-            self.add_constraint(ExpressionConstraint("a_lt_b", BinaryExpr(VariableExpr('a'), BinaryOp.LT, VariableExpr('b'))))
-            self.add_constraint(ExpressionConstraint("b_lt_c", BinaryExpr(VariableExpr('b'), BinaryOp.LT, VariableExpr('c'))))
+        @constraint
+        def a_less_than_b(self):
+            """a < b"""
+            return self.a < self.b
+
+        @constraint
+        def b_less_than_c(self):
+            """b < c"""
+            return self.b < self.c
 
     solver = CustomInequality()
 

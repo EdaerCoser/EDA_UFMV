@@ -1,7 +1,7 @@
 """
 简单测试示例 - 验证基本功能
 
-使用装饰器 API 和字符串约束语法
+使用新类型注解 API 和原生Python表达式约束
 """
 
 import sys
@@ -10,21 +10,15 @@ import os
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, project_root)
 
-from sv_randomizer import Randomizable, rand, randc, constraint
+from sv_randomizer import Randomizable
+from sv_randomizer.api import rand, randc, constraint
 
 
 class SimplePacket(Randomizable):
-    """简单的数据包类 - 使用装饰器 API"""
+    """简单的数据包类 - 使用新类型注解API"""
 
-    @rand(bit_width=16, min_val=0, max_val=65535)
-    def addr(self):
-        """16位地址"""
-        return 0
-
-    @randc(bit_width=4)
-    def id(self):
-        """4位循环ID (0-15，遍历完才重复)"""
-        return 0
+    addr: rand[int](bits=16, min=0, max=65535)
+    id: randc[int](bits=4)
 
 
 def test_basic_randomization():
@@ -59,22 +53,19 @@ def test_randc_cycle():
 
 
 def test_with_constraints():
-    """测试带约束的随机化 - 使用字符串约束语法"""
-    print("=== Test 3: With String Constraints ===")
+    """测试带约束的随机化 - 使用原生Python表达式"""
+    print("=== Test 3: With Native Python Constraints ===")
+
+    x_rand = rand(int)(min=0, max=100)
+    y_rand = rand(int)(min=0, max=100)
 
     class ConstrainedPacket(Randomizable):
-        @rand(min_val=0, max_val=100)
-        def x(self):
-            return 0
+        x: x_rand
+        y: y_rand
 
-        @rand(min_val=0, max_val=100)
-        def y(self):
-            return 0
-
-        # 字符串约束语法 (新)
-        @constraint('sum_constraint', 'x + y < 100')
-        def sum_c(self):
-            pass
+        @constraint
+        def sum_constraint(self):
+            return self.x + self.y < 100
 
     pkt = ConstrainedPacket()
 
@@ -88,25 +79,20 @@ def test_with_constraints():
 
 def test_complex_constraints():
     """测试复杂约束"""
-    print("=== Test 4: Complex String Constraints ===")
+    print("=== Test 4: Complex Native Python Constraints ===")
+
+    addr_rand = rand(int)(min=0, max=1000)
+    data_rand = rand(int)(min=0, max=1000)
+    length_rand = rand(int)(min=0, max=100)
 
     class ComplexPacket(Randomizable):
-        @rand(min_val=0, max_val=1000)
-        def addr(self):
-            return 0
+        addr: addr_rand
+        data: data_rand
+        length: length_rand
 
-        @rand(min_val=0, max_val=1000)
-        def data(self):
-            return 0
-
-        @rand(min_val=0, max_val=100)
-        def length(self):
-            return 0
-
-        # 多条件约束
-        @constraint('valid', 'addr >= 0x100 && addr <= 0xFFFF && data < 500 && length > 10')
-        def valid_c(self):
-            pass
+        @constraint
+        def valid(self):
+            return self.addr >= 0x100 and self.addr <= 0xFFFF and self.data < 500 and self.length > 10
 
     pkt = ComplexPacket()
 
