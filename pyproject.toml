@@ -45,9 +45,28 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
+# Core testing framework
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=3.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "mypy>=0.950",
+    "isort>=5.0.0",
+]
+# Enhanced testing capabilities
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=3.0.0",
+    "pytest-xdist>=3.0",         # Parallel test execution
+    "pytest-benchmark>=4.0",     # Performance benchmarking
+    "pytest-mock>=3.10",         # Mock support
+    "pytest-timeout>=2.1",       # Test timeout control
+    "pytest-randomly>=3.15",     # Randomized test order
+]
+# All testing dependencies
+testing = [
+    "eda-ufmv[test]",
     "black>=22.0.0",
     "flake8>=4.0.0",
     "mypy>=0.950",
@@ -147,9 +166,24 @@ testpaths = ["tests"]
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
-addopts = "-p no:qt"
+addopts = "-p no:qt -v --tb=short --strict-markers"
 filterwarnings = [
     "ignore::DeprecationWarning",
+]
+markers = [
+    "unit: 单元测试",
+    "integration: 集成测试",
+    "performance: 性能测试",
+    "benchmark: 基准测试",
+    "regression: 回归测试",
+    "P0: P0级关键测试",
+    "P1: P1级重要测试",
+    "P2: P2级增强测试",
+    "slow: 慢速测试",
+    "error_handling: 异常处理测试",
+    "boundary: 边界情况测试",
+    "cross_module: 跨模块集成测试",
+    "end_to_end: 端到端工作流测试",
 ]
 
 [tool.coverage.run]

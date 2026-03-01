@@ -8,8 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  # =============================================================================
+  # Unit Tests - Fast, Isolated Tests
+  # =============================================================================
+  test-unit:
     runs-on: ${{ matrix.os }}
+    name: Unit Tests (${{ matrix.os }}, Python ${{ matrix.python-version }})
     strategy:
       fail-fast: false
       matrix:
@@ -30,16 +34,59 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e ".[dev,z3]"
 
+    - name: Run P0 critical unit tests
+      run: |
+        python -m pytest tests/ -m "P0 and unit" -v --tb=short
+      env:
+        PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+
+    - name: Run error handling tests
+      run: |
+        python -m pytest tests/unit/test_error_handling/ -v --tb=short
+      env:
+        PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+
+    - name: Run boundary case tests
+      run: |
+        python -m pytest tests/unit/test_boundary_cases/ -v --tb=short
+      env:
+        PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+
+  # =============================================================================
+  # Integration Tests - Cross-Module Tests
+  # =============================================================================
+  test-integration:
+    runs-on: ${{ matrix.os }}
+    name: Integration Tests (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.9', '3.10', '3.11']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev,z3]"
+
     - name: Run coverage system tests
       run: |
         python run_coverage_tests.py
       env:
-        # Disable pytest-qt on all platforms to avoid Windows DLL issues
         PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
 
     - name: Run RGM tests
       run: |
-        python -m pytest tests/test_rgm/ -v --tb=short
+        python run_rgm_tests.py
       env:
         PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
 
@@ -49,29 +96,21 @@ jobs:
       env:
         PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
 
-    - name: Run integration tests
+    - name: Run cross-module integration tests
       run: |
-        python -m pytest tests/integration/ -v --tb=short
+        python -m pytest tests/integration/test_cross_module/ -v --tb=short
       env:
         PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
 
-    - name: Generate coverage report
-      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.10'
+    - name: Run end-to-end workflow tests
       run: |
-        pip install pytest-cov
-        python -m pytest tests/ --cov=sv_randomizer --cov=coverage --cov=rgm --cov-report=xml --cov-report=term
+        python -m pytest tests/integration/test_end_to_end/ -v --tb=short
       env:
         PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
 
-    - name: Upload coverage to Codecov
-      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.10'
-      uses: codecov/codecov-action@v3
-      with:
-        files: ./coverage.xml
-        flags: unittests
-        name: codecov-${{ matrix.os }}-py${{ matrix.python-version }}
-        fail_ci_if_error: false
-
+  # =============================================================================
+  # Performance Tests - Benchmark and Regression Detection
+  # =============================================================================
   test-performance:
     runs-on: ubuntu-latest
     name: Performance Benchmarks
@@ -89,8 +128,96 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e ".[dev]"
 
-    - name: Run performance tests
+    - name: Run performance benchmarks
       run: |
-        python -m pytest tests/performance/ -v --tb=short
+        python -m pytest tests/performance/test_benchmarks.py -v --tb=short -m benchmark
+      env:
+        PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+
+    - name: Store benchmark results
+      uses: benchmark-action/github-action-benchmark@v1
+      with:
+        tool: 'pytest'
+        output-file-path: benchmark.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        auto-push: false
+        alert-threshold: '150%'
+        comment-on-alert: true
+        fail-on-alert: true
+        alert-comment-cc: '@EdaerCoser'
+
+  # =============================================================================
+  # Coverage Report - Code Coverage Analysis
+  # =============================================================================
+  test-coverage:
+    runs-on: ubuntu-latest
+    name: Code Coverage Report
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev,z3]"
+        pip install pytest-cov
+
+    - name: Run all tests with coverage
+      run: |
+        python -m pytest tests/ \
+          --cov=sv_randomizer \
+          --cov=coverage \
+          --cov=rgm \
+          --cov-report=xml \
+          --cov-report=html \
+          --cov-report=term \
+          --cov-fail-under=85 \
+          -v
+      env:
+        PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+    - name: Archive coverage reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-reports
+        path: htmlcov/
+
+  # =============================================================================
+  # Extended Tests - Include Slow Tests
+  # =============================================================================
+  test-extended:
+    runs-on: ubuntu-latest
+    name: Extended Tests (including slow tests)
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev,z3]"
+
+    - name: Run all tests including slow ones
+      run: |
+        python -m pytest tests/ -v --tb=short --include-slow
       env:
         PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"

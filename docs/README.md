@@ -36,6 +36,7 @@
 - 🗺️ [开发路线图](development/ROADMAP.md) - 版本规划和里程碑
 - 🏗️ [架构设计](development/ARCHITECTURE.md) - 系统架构说明
 - 🤝 [贡献指南](development/CONTRIBUTING.md) - 如何贡献代码
+- 🧪 [测试指南](development/TEST_GUIDE.md) - 完整的测试体系文档
 - 📜 [变更历史](../CHANGELOG.md) - 版本更新记录
 - 📝 [文档维护指南](development/DOCUMENTATION_GUIDELINES.md) - 文档编写规范
 
@@ -66,6 +67,7 @@ docs/
 | 添加覆盖率 | [覆盖率系统](guides/coverage/) |
 | 使用寄存器模型 | [RGM用户指南](product/RGM_GUIDE.md) |
 | SSH访问FPGA板卡 | [SSH适配器指南](guides/rgm/SSH_ADAPTER_GUIDE.md) |
+| 运行或编写测试 | [测试指南](development/TEST_GUIDE.md) |
 | 报告问题或建议 | [贡献指南](development/CONTRIBUTING.md) |
 | 了解新版本特性 | [变更日志](../CHANGELOG.md) |
 | 贡献文档 | [文档维护指南](development/DOCUMENTATION_GUIDELINES.md) |
