@@ -14,6 +14,7 @@ __version__ = "0.3.0"
 from .core.randomizable import Randomizable
 from .core.variables import RandVar, RandCVar, VarType
 from .core.seeding import set_global_seed, get_global_seed, reset_global_seed
+seed = set_global_seed  # 便捷别名
 
 # 约束导出
 from .constraints.expressions import (
@@ -27,8 +28,7 @@ from .constraints.builders import InsideConstraint, DistConstraint
 from .solvers.solver_factory import SolverFactory
 
 # API导出
-from .api.decorators import rand, randc, constraint
-from .api.dsl import inside, dist, VarProxy
+from .api.annotations import rand, randc, constraint, inside, dist, VarProxy
 
 __all__ = [
     # 核心类
@@ -60,6 +60,7 @@ __all__ = [
     "VarProxy",
 
     # 种子控制
+    "seed",
     "set_global_seed",
     "get_global_seed",
     "reset_global_seed",

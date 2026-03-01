@@ -14,11 +14,15 @@ from sv_randomizer import Randomizable
 from sv_randomizer.api import rand, randc, constraint
 
 
+# 创建类型注解
+addr_rand = rand(int)(bits=16, min=0, max=65535)
+id_randc = randc(int)(bits=4)
+
 class SimplePacket(Randomizable):
     """简单的数据包类 - 使用新类型注解API"""
 
-    addr: rand[int](bits=16, min=0, max=65535)
-    id: randc[int](bits=4)
+    addr: addr_rand
+    id: id_randc
 
 
 def test_basic_randomization():

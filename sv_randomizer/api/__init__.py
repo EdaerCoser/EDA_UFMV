@@ -7,7 +7,7 @@
 from .annotations import rand, randc, constraint
 
 # DSL便捷函数（向后兼容）
-from .dsl import inside, dist, VarProxy
+from .annotations import inside, dist, VarProxy
 
 # Seed控制（从seeding模块导入）
 from ..core.seeding import set_global_seed as seed

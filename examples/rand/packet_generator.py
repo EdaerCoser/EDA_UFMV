@@ -15,6 +15,12 @@ from sv_randomizer import Randomizable, seed
 from sv_randomizer.api import rand, randc, constraint
 from sv_randomizer.formatters import VerilogFormatter
 
+# 创建类型注解
+src_addr_rand = rand(int)(bits=16, min=0x1000, max=0xFFFF)
+dest_addr_rand = rand(int)(bits=16)
+length_rand = rand(int)(bits=8, min=64, max=1500)
+packet_id_randc = randc(int)(bits=4)
+
 
 class Packet(Randomizable):
     """
@@ -28,10 +34,10 @@ class Packet(Randomizable):
     """
 
     # 变量声明 - 使用类型注解
-    src_addr: rand[int](bits=16, min=0x1000, max=0xFFFF)
-    dest_addr: rand[int](bits=16)
-    length: rand[int](bits=8, min=64, max=1500)
-    packet_id: randc[int](bits=4)
+    src_addr: src_addr_rand
+    dest_addr: dest_addr_rand
+    length: length_rand
+    packet_id: packet_id_randc
 
     # 约束 - 使用原生Python表达式
     @constraint
