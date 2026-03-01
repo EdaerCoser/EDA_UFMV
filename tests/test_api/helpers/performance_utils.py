@@ -7,7 +7,7 @@
 import time
 import json
 import os
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, Optional
 
 
 def measure_randomization_rate(obj, iterations: int = 1000, warmup: int = 100) -> float:
@@ -47,15 +47,15 @@ def measure_memory_usage(obj, iterations: int = 100) -> Tuple[int, int]:
         tuple: (当前内存, 峰值内存) bytes
     """
     import tracemalloc
+
     tracemalloc.start()
-
-    for _ in range(iterations):
-        obj.randomize()
-
-    current, peak = tracemalloc.get_traced_memory()
-    tracemalloc.stop()
-
-    return current, peak
+    try:
+        for _ in range(iterations):
+            obj.randomize()
+        current, peak = tracemalloc.get_traced_memory()
+        return current, peak
+    finally:
+        tracemalloc.stop()
 
 
 class PerformanceBaseline:
@@ -76,14 +76,27 @@ class PerformanceBaseline:
     def _load(self) -> Dict[str, Any]:
         """从文件加载基线数据"""
         if os.path.exists(self.file):
-            with open(self.file, 'r') as f:
-                return json.load(f)
+            try:
+                with open(self.file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, IOError) as e:
+                import warnings
+                warnings.warn(f"Failed to load baseline file {self.file}: {e}. Starting with empty baseline.")
+                return {}
         return {}
 
     def save(self, data: Dict[str, Any]) -> None:
         """保存基线数据到文件"""
-        with open(self.file, 'w') as f:
-            json.dump(data, f, indent=2)
+        try:
+            # Create directory if it doesn't exist
+            dir_path = os.path.dirname(self.file)
+            if dir_path:
+                os.makedirs(dir_path, exist_ok=True)
+            with open(self.file, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+        except (IOError, OSError) as e:
+            import warnings
+            warnings.warn(f"Failed to save baseline file {self.file}: {e}")
 
     def update(self, metric: str, value: float) -> None:
         """
@@ -96,7 +109,7 @@ class PerformanceBaseline:
         self.data[metric] = value
         self.save(self.data)
 
-    def get(self, metric: str, default: float = None) -> float:
+    def get(self, metric: str, default: Optional[float] = None) -> Optional[float]:
         """
         获取基线指标值
 
@@ -105,7 +118,7 @@ class PerformanceBaseline:
             default: 默认值
 
         Returns:
-            float: 指标值
+            Optional[float]: 指标值，如果不存在则返回默认值
         """
         return self.data.get(metric, default)
 
@@ -125,6 +138,10 @@ class PerformanceBaseline:
         for metric, baseline_val in self.data.items():
             current_val = current_data.get(metric)
             if current_val is None:
+                continue
+
+            # Skip zero values to avoid division by zero
+            if baseline_val == 0 or current_val == 0:
                 continue
 
             # 判断指标类型（速率越高越好，时间越低越好）
