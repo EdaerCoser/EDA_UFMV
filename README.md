@@ -61,6 +61,13 @@
 - ✅ 硬件适配器 - AXI, APB, UART, SSH远程访问
 - ✅ 代码生成器 - Verilog RTL, C头文件, Python模型
 
+**SV→Python转换器** (`sv_to_python` - 独立工具):
+
+- ✅ SystemVerilog解析 - 提取UVM寄存器操作和任务
+- ✅ Python代码生成 - 自动生成Python等价代码
+- ✅ 命令行工具 - `sv-to-python` CLI支持批量转换
+- ✅ IDE集成 - 支持从SV测试代码迁移到Python
+
 ### 规划中功能
 
 - 📋 覆盖率引导随机化 (v0.4.0)
@@ -200,10 +207,6 @@ docs/
 - 🗺️ [开发路线图](docs/development/ROADMAP.md) - 版本规划和里程碑
 - 🏗️ [架构设计](docs/development/ARCHITECTURE.md) - 系统架构说明
 
-### 开发文档
-- 🗺️ [开发路线图](docs/development/ROADMAP.md)
-- 🏗️ [架构设计](docs/development/ARCHITECTURE.md)
-
 ### 版本信息
 - 📝 [变更日志](CHANGELOG.md)
 - ⚖️ [许可证](LICENSE)
@@ -255,6 +258,8 @@ docs/
 | v0.4.0 | 覆盖率引导随机化 | 📋 规划中 |
 | v0.5.0 | DUT配置转换 | 📋 规划中 |
 | v1.0.0 | 完整平台 | 📋 规划中 |
+
+**附注**: SV→Python转换器 (`sv_to_python`) 是独立的工具模块 (v0.1.0)，用于SystemVerilog测试代码迁移，不属于主版本序列。
 
 详见 [开发路线图](docs/development/ROADMAP.md)
 

@@ -12,9 +12,8 @@
 - 性能优化
 
 ### [覆盖率系统](coverage/)
-- [API参考](coverage/api-reference.md)
-- [Bin类型详解](coverage/bins-reference.md)
-- [迁移详细参考](coverage/migration.md)
+
+- [SystemVerilog迁移详细参考](coverage/migration.md)
 
 ### [寄存器模型](rgm/)
 - [SSH适配器指南](rgm/SSH_ADAPTER_GUIDE.md)

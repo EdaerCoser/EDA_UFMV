@@ -1,83 +1,65 @@
-# 使用指南
+# 使用指南 (已迁移)
 
-本部分包含EDA_UFMV各系统的详细使用指南。
-
----
-
-## 指南列表
-
-### 核心系统指南
-
-- 🎲 [随机化系统](randomization.md)
-  - rand/randc变量
-  - 约束定义和使用
-  - 种子管理
-  - 求解器选择
-
-- 📊 [覆盖率系统](coverage/)
-  - [覆盖率概述](coverage/README.md) - 覆盖率系统架构
-  - [SystemVerilog迁移指南](coverage/systemverilog-migration.md) - SV到Python语法对照
-  - [覆盖率API参考](coverage/api-reference.md) - 完整API文档
-
-- 🗄️ [寄存器模型系统](rgm/)
-  - [RGM概述](../product/RGM_GUIDE.md) - 完整RGM用户指南
-  - [SSH适配器指南](rgm/SSH_ADAPTER_GUIDE.md) - SSH远程访问
-
-- ⚖️ [约束系统](constraints.md)
-  - 约束表达式
-  - 关系运算和逻辑运算
-  - inside和dist约束
-
-- 🌱 [种子管理](seeding.md)
-  - 全局种子设置
-  - 对象级种子
-  - 可复现的随机化
+> **⚠️ 文档结构已更新**
+>
+> 本目录已迁移到新的三层文档架构。请使用以下链接访问最新文档：
 
 ---
 
-## 按主题查找
+## 📚 新文档结构
 
-### 随机化相关
+### 快速上手 (scenarios/)
 
-| 主题 | 指南 | 章节 |
-|:---|:---|:---|
-| 定义随机变量 | [随机化系统](randomization.md) | 变量定义 |
-| 添加约束 | [约束系统](constraints.md) | 约束类型 |
-| 控制随机化 | [随机化系统](randomization.md) | pre/post_randomize |
-| 设置种子 | [种子管理](seeding.md) | 种子类型 |
+按"我想做什么"快速找到解决方案：
 
-### 覆盖率相关
+- 🎲 [生成随机激励](../scenarios/01-generate-random.md) - 随机化快速上手
+- 📊 [收集功能覆盖率](../scenarios/02-collect-coverage.md) - 覆盖率收集入门
+- 🗄️ [创建寄存器模型](../scenarios/03-create-regmodel.md) - RGM快速指南
+- 🔄 [从SystemVerilog迁移](../scenarios/04-migrate-from-sv.md) - SV到Python迁移
+- 🤖 [自动化SV→Python转换](../scenarios/05-automate-conversion.md) - 使用转换工具
+- 📋 [完整验证流程](../scenarios/06-complete-workflow.md) - 端到端示例
 
-| 主题 | 指南 | 章节 |
-|:---|:---|:---|
-| 定义CoverGroup | [覆盖率概述](coverage/README.md) | 基础用法 |
-| 使用Bin类型 | [SV迁移指南](coverage/systemverilog-migration.md) | Bin类型详解 |
-| Cross覆盖率 | [SV迁移指南](coverage/systemverilog-migration.md) | Cross覆盖率 |
-| 生成报告 | [覆盖率API](coverage/api-reference.md) | 报告生成 |
+### 深入理解 (concepts/)
 
-### 寄存器模型相关
+理解技术原理和设计思想：
 
-| 主题 | 指南 | 章节 |
-|:---|:---|:---|
-| 创建寄存器模型 | [RGM指南](../product/RGM_GUIDE.md) | 快速开始 |
-| 字段访问类型 | [RGM指南](../product/RGM_GUIDE.md) | 访问类型 |
-| UVM风格接口 | [RGM指南](../product/RGM_GUIDE.md) | UVM接口 |
-| SSH远程访问 | [SSH适配器](rgm/SSH_ADAPTER_GUIDE.md) | 远程板卡 |
-| 代码生成 | [RGM指南](../product/RGM_GUIDE.md) | 代码生成 |
+- 🔄 [SystemVerilog→Python映射表](../concepts/sv-to-python-mapping.md) - **必读**
+- 🎲 [随机化深入](../concepts/randomization-deep-dive.md) - 框架、算法、设计模式
+- 📊 [覆盖率深入](../concepts/coverage-deep-dive.md) - 架构、实现细节
+- 🗄️ [RGM深入](../concepts/rgm-deep-dive.md) - 寄存器模型深度
 
----
+### 技术参考 (reference/)
 
-## 学习建议
+完整API文档和详细指南：
 
-1. **从示例开始**: 所有指南都包含可运行的代码示例
-2. **循序渐进**: 按照推荐的学习路径逐步深入
-3. **动手实践**: 边学边写代码，加深理解
-4. **查阅API**: 遇到具体问题时查阅API参考
+- 🎲 [随机化完整参考](../reference/randomization.md)
+- 📊 [覆盖率迁移详细参考](../reference/coverage/migration.md)
+- 🤖 [SV→Python转换器](../reference/sv-converter.md)
+- 🗄️ [SSH适配器指南](../reference/rgm/SSH_ADAPTER_GUIDE.md)
 
 ---
 
-## 相关文档
+## 🔗 URL映射表
 
-- 📋 [功能清单](../product/features.md) - 完整功能列表
-- 🎯 [应用场景](../product/use-cases.md) - 实际使用案例
-- 🔧 [API参考](../api/) - 完整API文档
+| 旧路径 | 新路径 |
+|:---|:---|
+| `guides/randomization.md` | → [scenarios/01](../scenarios/01-generate-random.md) 或 [reference/](../reference/randomization.md) |
+| `guides/coverage/systemverilog-migration.md` | → [concepts/](../concepts/sv-to-python-mapping.md) 或 [scenarios/02](../scenarios/02-collect-coverage.md) |
+| `guides/sv-to-python-guide.md` | → [reference/sv-converter.md](../reference/sv-converter.md) |
+| `guides/rgm/SSH_ADAPTER_GUIDE.md` | → [reference/rgm/](../reference/rgm/SSH_ADAPTER_GUIDE.md) |
+
+---
+
+## 📖 迁移说明
+
+EDA_UFMV文档已从单一指南结构重构为**三层文档架构**：
+
+- **scenarios/** - 任务导向（快速上手）"我想做什么"
+- **concepts/** - 概念深入（理解原理）"如何工作"
+- **reference/** - 技术参考（查阅细节）"完整接口"
+
+详见：[文档迁移指南](../../DOCUMENTATION_MIGRATION.md)
+
+---
+
+**返回**: [文档主页](../README.md) | [项目README](../../README.md)
