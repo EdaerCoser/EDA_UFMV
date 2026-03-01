@@ -1,6 +1,6 @@
 # 竞品对比
 
-**版本**: v0.2.0
+**版本**: v0.3.1
 
 ---
 
@@ -51,7 +51,8 @@ SystemVerilog基础
 ```
 Python基础
   → Randomizable类
-    → @rand/@constraint装饰器
+    → 类型注解API (rand/randc)
+    → @constraint装饰器
 ```
 
 #### 3. 生态系统

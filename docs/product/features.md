@@ -1,47 +1,69 @@
 # 功能清单
 
-**版本**: v0.2.0
+**版本**: v0.3.1
 
 ---
 
-## v0.2.0 功能清单
+## v0.3.1 功能清单
 
 ### 1. 随机化与约束系统 ✅
 
-#### 1.1 随机变量
+#### 1.1 随机变量 (类型注解API)
 
 | 功能 | 说明 | 示例 |
 |:---|:---|:---|
-| **rand变量** | 标准随机变量，每次独立生成 | `@rand def addr(self): return 0` |
-| **randc变量** | 循环随机，遍历所有值后重复 | `@randc(bit_width=4) def id(self): return 0` |
-| **变量类型** | INT, BIT, ENUM | `RandVar('name', VarType.INT, 0, 100)` |
+| **rand变量** | 标准随机变量，每次独立生成 | `value: rand(int)(bits=8)` |
+| **randc变量** | 循环随机，遍历所有值后重复 | `id: randc(int)(bits=4)` |
+| **变量类型** | int, str, Enum等Python类型 | `data: rand(int)(bits=16, min=0, max=65535)` |
 
-#### 1.2 约束类型
+**完整示例**:
+```python
+from sv_randomizer import Randomizable
+from sv_randomizer.api import rand, randc
+
+# 定义类型注解
+addr_rand = rand(int)(bits=16, min=0, max=65535)
+id_randc = randc(int)(bits=4)
+
+class Packet(Randomizable):
+    addr: addr_rand
+    id: id_randc
+```
+
+#### 1.2 约束类型 (原生Python表达式)
 
 | 约束类型 | 说明 | 示例 |
 |:---|:---|:---|
-| **关系运算** | ==, !=, <, >, <=, >= | `"x > 10"` 或 `VarProxy("x") > 10` |
-| **逻辑运算** | &&, \|\|, ! | `"a && b"` 或 `a.and(b)` |
-| **蕴含运算** | -> (implies) | `"a -> b"` 或 `a.implies(b)` |
-| **inside约束** | 范围/值成员 | `"x in [0:100]"` 或 `x inside {[0:100]}` |
-| **dist约束** | 权重分布 | `value dist {0:=40, [1:10]:=60}` |
-| **算术运算** | +, -, *, /, % | `"a + b"` |
-| **位运算** | &, \|, ^, ~, <<, >> | `"a & b"` |
+| **关系运算** | ==, !=, <, >, <=, >= | `self.x > 10` |
+| **逻辑运算** | and, or, not | `self.x >= 10 and self.x <= 100` |
+| **链式比较** | Python原生链式比较 | `0 <= self.value <= 100` |
+| **inside约束** | 范围/值成员 | `inside([(0, 100), (200, 300)]) == self.value` |
+| **dist约束** | 权重分布 | `dist([(0, 100, 70), (100, 200, 30)]) == self.value` |
+| **算术运算** | +, -, *, /, % | `self.x + self.y` |
+| **位运算** | &, \|, ^, ~, <<, >> | `self.addr & 0xFF` |
 
-**字符串约束表达式** (新特性 v0.2.0):
-- 支持类似SystemVerilog的字符串语法
-- 使用`@constraint("name", "expr")`定义
-- 更简洁、更接近SystemVerilog风格
+**原生Python表达式约束** (新特性 v0.3.1):
+- 使用@constraint装饰器
+- 支持原生Python语法
+- 自动类型检查和IDE支持
 
 ```python
-# 字符串表达式（推荐）
-@constraint("valid_addr", "src_addr >= 0x1000 && src_addr != dest_addr")
-def valid_addr_c(self): pass
+from sv_randomizer.api import constraint, inside, dist
 
-# 传统表达式（仍支持）
-@constraint("valid_addr")
-def valid_addr_c(self):
-    return VarProxy("src_addr") >= 0x1000 and VarProxy("src_addr") != VarProxy("dest_addr")
+@constraint
+def valid_addr(self):
+    # 原生Python表达式
+    return self.src_addr >= 0x1000 and self.src_addr != self.dest_addr
+
+@constraint
+def value_in_ranges(self):
+    # 使用inside函数
+    return inside([(0, 100), (200, 300)]) == self.value
+
+@constraint
+def weighted_distribution(self):
+    # 使用dist函数
+    return dist([(0, 100, 70), (100, 200, 30)]) == self.value
 ```
 
 #### 1.3 求解器

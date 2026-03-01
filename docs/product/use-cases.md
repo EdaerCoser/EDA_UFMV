@@ -1,6 +1,6 @@
 # 应用场景
 
-**版本**: v0.2.0
+**版本**: v0.3.1
 
 ---
 
@@ -19,10 +19,14 @@
 ### 典型工作流
 
 ```python
+from sv_randomizer import Randomizable
+from sv_randomizer.api import rand
+
 # 1. 定义测试激励
+stimulus_rand = rand(int)(bits=32)
+
 class TestVector(Randomizable):
-    @rand(bit_width=32)
-    def stimulus(self): return 0
+    stimulus: stimulus_rand
 
 # 2. 生成测试向量
 vectors = []
@@ -96,19 +100,22 @@ cgr.randomize_until_coverage(target_coverage=95.0)
 **实现**:
 
 ```python
+from sv_randomizer import Randomizable
+from sv_randomizer.api import rand, constraint
+
+# 定义类型注解
+addr_rand = rand(int)(bits=32)
+data_rand = rand(int)(bits=8)
+opcode_rand = rand(str)(enum_values=['READ', 'WRITE'])
+
 class AXITransaction(Randomizable):
-    @rand(bit_width=32)
-    def addr(self): return 0
+    addr: addr_rand
+    data: data_rand
+    opcode: opcode_rand
 
-    @rand(bit_width=8)
-    def data(self): return 0
-
-    @rand(enum_values=['READ', 'WRITE'])
-    def opcode(self): return 'READ'
-
-    @constraint("addr_aligned")
-    def addr_aligned_c(self):
-        return VarProxy("addr") % 4 == 0
+    @constraint
+    def addr_aligned(self):
+        return self.addr % 4 == 0
 ```
 
 **关键点**:
@@ -123,19 +130,21 @@ class AXITransaction(Randomizable):
 **实现**:
 
 ```python
+from sv_randomizer import Randomizable
+from sv_randomizer.api import rand, constraint
+
+src_addr_rand = rand(int)(bits=32)
+dst_addr_rand = rand(int)(bits=32)
+transfer_size_rand = rand(int)(bits=16)
+
 class DMAConfig(Randomizable):
-    @rand(bit_width=32)
-    def src_addr(self): return 0
+    src_addr: src_addr_rand
+    dst_addr: dst_addr_rand
+    transfer_size: transfer_size_rand
 
-    @rand(bit_width=32)
-    def dst_addr(self): return 0
-
-    @rand(bit_width=16)
-    def transfer_size(self): return 0
-
-    @constraint("addr_not_overlap")
-    def addr_not_overlap_c(self):
-        return VarProxy("src_addr") + VarProxy("transfer_size") <= VarProxy("dst_addr")
+    @constraint
+    def addr_not_overlap(self):
+        return self.src_addr + self.transfer_size <= self.dst_addr
 ```
 
 **关键点**:
@@ -150,15 +159,17 @@ class DMAConfig(Randomizable):
 **实现**:
 
 ```python
+from sv_randomizer import Randomizable
+from sv_randomizer.api import rand
+
+baud_rate_rand = rand(str)(enum_values=[9600, 19200, 38400, 57600, 115200])
+parity_rand = rand(str)(enum_values=['NONE', 'EVEN', 'ODD'])
+stop_bits_rand = rand(int)(bits=2, min=1, max=2)
+
 class UARTConfig(Randomizable):
-    @rand(enum_values=[9600, 19200, 38400, 57600, 115200])
-    def baud_rate(self): return 9600
-
-    @rand(enum_values=['NONE', 'EVEN', 'ODD'])
-    def parity(self): return 'NONE'
-
-    @rand(bit_width=2)
-    def stop_bits(self): return 1
+    baud_rate: baud_rate_rand
+    parity: parity_rand
+    stop_bits: stop_bits_rand
 ```
 
 **关键点**:
