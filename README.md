@@ -162,21 +162,22 @@ python .claude/skills/test-agent/runner.py --all
 
 ## 💡 示例
 
-### 基础示例 (`examples/basic/`)
+### 随机化示例 (`examples/rand/`)
 
-| 示例文件 | 说明 |
-|:---|:---|
-| `simple_test.py` | 简单随机变量示例 |
-| `packet_generator.py` | 数据包生成示例 |
-| `seed_demo.py` | 随机种子控制演示 |
-| `test_six_variables.py` | 六元方程组约束求解测试 |
+| 示例文件 | 说明 | 功能点 |
+|:---|:---|:---|
+| `simple_test.py` | 简单随机变量示例 | 基础rand/randc变量使用 |
+| `packet_generator.py` | 数据包生成示例 | 约束系统和随机化组合 |
+| `seed_demo.py` | 随机种子控制演示 | 种子管理和可重现性 |
+| `test_six_variables.py` | 六元方程组约束求解 | 复杂约束系统验证 |
+| `solve_inequalities.py` | 不等式求解 | Inside约束使用 |
 
 ### 规划中示例
 
 - `examples/coverage/` - 功能覆盖率示例（v0.2.0）
 - `examples/rgm/` - 寄存器模型示例（v0.3.0）
+- `examples/enhanced_rand/` - 覆盖率引导随机化（v0.4.0）
 - `examples/parser/` - DUT解析示例（v0.5.0）
-- `examples/enhanced_rand/` - 增强随机化示例（v0.4.0）
 
 ---
 
