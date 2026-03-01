@@ -4,10 +4,10 @@ Randomizable基类
 所有可随机化类的基类，提供randomize()方法和约束管理
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, get_type_hints
 import random
 
-from .variables import RandVar, RandCVar
+from .variables import RandVar, RandCVar, VarType
 from .seeding import create_random_instance
 from ..constraints.base import Constraint
 from ..solvers.solver_factory import SolverFactory
@@ -17,8 +17,98 @@ from ..utils.exceptions import ConstraintConflictError, UnsatisfiableError
 # Coverage is now an independent top-level module
 from coverage.core import CoverGroup
 
+# Type annotations support (v0.3.0)
+from ..api.annotations import (
+    is_rand_annotation, is_randc_annotation,
+    extract_rand_metadata, extract_randc_metadata
+)
 
-class Randomizable:
+
+class RandomizableMeta(type):
+    """
+    Randomizable的元类 - 自动处理类型注解
+
+    功能：
+    1. 解析类属性中的rand/randc类型注解
+    2. 自动创建对应的RandVar/RandCVar对象
+    3. 将变量注册到类的_rand_vars/_randc_vars字典
+    """
+
+    def __new__(cls, name: str, bases: tuple, namespace: dict, **kwargs):
+        # 创建新类
+        new_cls = super().__new__(cls, name, bases, namespace)
+
+        # 为每个类创建独立的存储字典（不继承基类的）
+        # 检查是否直接在类命名空间中定义了这些属性
+        if '_rand_vars' not in namespace:
+            new_cls._rand_vars = {}
+        if '_randc_vars' not in namespace:
+            new_cls._randc_vars = {}
+
+        # 解析类型注解（跳过Randomizable基类本身）
+        if name != 'Randomizable':
+            try:
+                hints = get_type_hints(new_cls, include_extras=True)
+                _process_annotations(new_cls, hints)
+            except (NameError, AttributeError):
+                # 类型注解可能引用尚未定义的类型，跳过
+                pass
+
+        return new_cls
+
+
+def _process_annotations(cls: type, hints: dict) -> None:
+    """
+    处理类型注解，创建随机变量
+
+    Args:
+        cls: 类对象
+        hints: 类型注解字典 {属性名: 类型注解}
+    """
+    for attr_name, hint in hints.items():
+        # 跳过特殊方法和私有属性
+        if attr_name.startswith('_'):
+            continue
+
+        try:
+            if is_rand_annotation(hint):
+                metadata = extract_rand_metadata(hint)
+                var = _create_rand_var(attr_name, metadata)
+                cls._rand_vars[attr_name] = var
+
+            elif is_randc_annotation(hint):
+                metadata = extract_randc_metadata(hint)
+                var = _create_randc_var(attr_name, metadata)
+                cls._randc_vars[attr_name] = var
+        except Exception as e:
+            # 记录错误但继续处理其他注解
+            import warnings
+            warnings.warn(f"Failed to process annotation '{attr_name}': {e}")
+
+
+def _create_rand_var(name: str, metadata) -> RandVar:
+    """从Rand元数据创建RandVar"""
+    var_type = VarType.INT
+
+    # 确定范围
+    if metadata.min is not None and metadata.max is not None:
+        min_val = metadata.min
+        max_val = metadata.max
+    else:
+        min_val = 0
+        max_val = (1 << metadata.bits) - 1
+
+    return RandVar(name, var_type, bit_width=metadata.bits,
+                   min_val=min_val, max_val=max_val)
+
+
+def _create_randc_var(name: str, metadata) -> RandCVar:
+    """从RandC元数据创建RandCVar"""
+    var_type = VarType.BIT
+    return RandCVar(name, var_type, bit_width=metadata.bits)
+
+
+class Randomizable(metaclass=RandomizableMeta):
     """
     可随机化类的基类
 
