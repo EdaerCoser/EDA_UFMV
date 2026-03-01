@@ -134,30 +134,71 @@ python .claude/skills/test-agent/runner.py --all
 
 ## 文档
 
-### 用户文档
-- 📖 [产品概述](docs/product/overview.md)
-- 🚀 [快速开始](docs/user/quick-start.md)
-- ✨ [功能清单](docs/product/features.md)
-- 🎯 [应用场景](docs/product/use-cases.md)
+### 📚 文档架构
 
-### 场景化文档（推荐新手）
-- 🎲 [生成随机测试激励](docs/scenarios/01-generate-random.md) - 随机化入门
-- 📊 [收集功能覆盖率](docs/scenarios/02-collect-coverage.md) - 覆盖率入门
-- 🗄️ [创建寄存器模型](docs/scenarios/03-create-regmodel.md) - RGM入门
-- 🔄 [从SystemVerilog迁移](docs/scenarios/04-migrate-from-sv.md) - 迁移指南
+EDA_UFMV采用**三层文档架构**，帮助您快速找到所需信息：
+
+```
+docs/
+├── scenarios/         # 场景化文档 - 按"我想做什么"组织（推荐新手）
+├── concepts/          # 概念参考 - 深入技术原理（理解原理）
+├── reference/         # 技术参考 - 完整API文档（查阅细节）
+├── product/           # 产品文档 - 概述、功能、场景
+└── development/       # 开发文档 - 路线图、架构
+```
+
+---
+
+### 🎯 场景化文档（推荐新手）
+
+按"我想做什么"快速找到解决方案：
+
+- 🎲 [生成随机测试激励](docs/scenarios/01-generate-random.md) - 生成符合约束的随机数据
+- 📊 [收集功能覆盖率](docs/scenarios/02-collect-coverage.md) - 测量验证完整性
+- 🗄️ [创建寄存器模型](docs/scenarios/03-create-regmodel.md) - DUT配置管理
+- 🔄 [从SystemVerilog迁移](docs/scenarios/04-migrate-from-sv.md) - SV到Python迁移指南
+- 🤖 [自动化SV→Python转换](docs/scenarios/05-automate-conversion.md) - 使用转换工具
+- 📋 [完整验证流程](docs/scenarios/06-complete-workflow.md) - 端到端示例
 
 **完整场景索引**: [docs/scenarios/](docs/scenarios/)
 
-### 概念参考
-- 🔄 [SystemVerilog→Python映射表](docs/concepts/sv-to-python-mapping.md) - **必读**
-- 🎲 [随机化深入](docs/concepts/randomization-deep-dive.md)
-- 📊 [覆盖率深入](docs/concepts/coverage-deep-dive.md)
+---
 
-### 技术参考
+### 🧠 概念参考
+
+深入理解技术原理：
+
+- 🔄 [SystemVerilog→Python映射表](docs/concepts/sv-to-python-mapping.md) - **必读**
+- 🎲 [随机化深入](docs/concepts/randomization-deep-dive.md) - 框架、算法、设计模式
+- 📊 [覆盖率深入](docs/concepts/coverage-deep-dive.md) - 架构、实现细节
+- 🗄️ [RGM深入](docs/concepts/rgm-deep-dive.md) - 寄存器模型深度
+
+---
+
+### 📖 技术参考
+
+完整API文档和详细指南：
+
 - 🎲 [随机化完整参考](docs/reference/randomization.md)
 - 📊 [覆盖率迁移详细参考](docs/reference/coverage/migration.md)
 - 🤖 [SV→Python转换器](docs/reference/sv-converter.md)
 - 🗄️ [SSH适配器指南](docs/reference/rgm/SSH_ADAPTER_GUIDE.md)
+
+---
+
+### 📋 产品文档
+
+- 📖 [产品概述](docs/product/overview.md) - 产品定位和核心价值
+- ✨ [功能清单](docs/product/features.md) - 完整功能列表
+- 🎯 [应用场景](docs/product/use-cases.md) - 典型使用案例
+- 🔄 [与UVM对比](docs/product/comparison.md) - 竞品对比
+
+---
+
+### 👨‍💻 开发文档
+
+- 🗺️ [开发路线图](docs/development/ROADMAP.md) - 版本规划和里程碑
+- 🏗️ [架构设计](docs/development/ARCHITECTURE.md) - 系统架构说明
 
 ### 开发文档
 - 🗺️ [开发路线图](docs/development/ROADMAP.md)
