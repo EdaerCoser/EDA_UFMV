@@ -55,6 +55,10 @@ class Randomizable:
         self._seed: Optional[int] = seed
         self._random: Optional[random.Random] = None
 
+        # Coverage system integration (v0.2.0)
+        self._covergroups: Dict[str, Any] = {}  # CoverGroup instances
+        self._coverage_auto_sample = True  # Auto-sample on randomize
+
     def pre_randomize(self) -> None:
         """
         随机化前回调
@@ -70,8 +74,12 @@ class Randomizable:
 
         子类可以重写此方法以在随机化后执行自定义逻辑
         例如：计算派生值、验证结果、生成特殊值
+
+        扩展：自动触发覆盖率采样（v0.2.0）
         """
-        pass
+        # 自动采样覆盖率（如果启用）
+        if self._coverage_auto_sample and self._covergroups:
+            self._sample_coverage()
 
     def set_seed(self, seed: Optional[int]) -> None:
         """
@@ -203,10 +211,29 @@ class Randomizable:
             # 添加约束
             for constraint in active_constraints:
                 # 如果约束涉及randc变量，需要特殊处理
-                # 这里简化：跳过涉及randc的约束
+                # 将randc变量替换为已生成的常量值
                 constraint_vars = constraint.get_variables()
                 has_randc = any(v in self._randc_vars for v in constraint_vars)
-                if not has_randc:
+
+                if has_randc:
+                    # 涉及randc的约束：验证randc值是否满足约束
+                    # 简化处理：检查约束是否被当前randc值满足
+                    # TODO: 完整实现应该将randc变量作为常量添加到约束中
+                    if hasattr(constraint, 'check'):
+                        # 构建包含randc值的上下文进行验证
+                        context = randc_values.copy()
+                        if not constraint.check(context):
+                            # randc值不满足约束，需要重新生成或返回失败
+                            # 这里简化：返回False让用户知道约束冲突
+                            from ..utils.exceptions import ConstraintConflictError
+                            raise ConstraintConflictError(
+                                f"Constraint '{constraint.name}' conflicts with randc variable values: {randc_values}"
+                            )
+                    else:
+                        # 对于表达式约束，暂时跳过（理想情况应该支持）
+                        continue
+                else:
+                    # 不涉及randc的约束，直接添加到求解器
                     solver.add_constraint(constraint)
 
             # 求解
@@ -225,8 +252,14 @@ class Randomizable:
             self.post_randomize()
             return True
 
+        except (ConstraintConflictError, UnsatisfiableError):
+            # 预期的约束求解错误，静默返回False
+            return False
+        except (KeyboardInterrupt, SystemExit):
+            # 不要捕获系统级异常
+            raise
         except Exception as e:
-            # 捕获求解错误
+            # 其他未预期的错误，记录并返回False
             import traceback
             traceback.print_exc()
             return False
@@ -307,12 +340,14 @@ class Randomizable:
         构建内联约束
 
         Args:
-            inline: 内联约束字典
+            inline: 内联约束字典，支持两种形式：
+                    - 值形式：{"addr": 1000}  → addr == 1000
+                    - 函数形式：{"length": lambda x: x > 0}  → 自定义验证
 
         Returns:
             约束列表
         """
-        from ..constraints.base import ExpressionConstraint
+        from ..constraints.base import ExpressionConstraint, FunctionConstraint
         from ..constraints.expressions import VariableExpr, ConstantExpr, BinaryExpr, BinaryOp
 
         constraints = []
@@ -320,10 +355,14 @@ class Randomizable:
         for var_name, value in inline.items():
             if callable(value):
                 # 函数形式的约束
-                # 这里简化处理，实际应该更复杂
-                pass
+                # 创建一个函数约束，在求解后验证
+                constraint = FunctionConstraint(
+                    f"_inline_func_{var_name}",
+                    lambda ctx, v=value, n=var_name: v(ctx.get(n))
+                )
+                constraints.append(constraint)
             else:
-                # 简单的值约束
+                # 简单的值约束：变量 == 值
                 expr = BinaryExpr(
                     VariableExpr(var_name),
                     BinaryOp.EQ,
@@ -377,3 +416,90 @@ class Randomizable:
             变量名列表
         """
         return list(self._rand_vars.keys()) + list(self._randc_vars.keys())
+
+    def add_covergroup(self, covergroup) -> None:
+        """
+        添加覆盖率组到当前对象
+
+        Args:
+            covergroup: CoverGroup实例
+
+        Example:
+            >>> cg = PacketCoverage()
+            >>> pkt.add_covergroup(cg)
+        """
+        self._covergroups[covergroup.name] = covergroup
+
+    def get_covergroup(self, name: str) -> Optional[Any]:
+        """
+        根据名称获取覆盖率组
+
+        Args:
+            name: CoverGroup名称
+
+        Returns:
+            CoverGroup实例，不存在返回None
+        """
+        return self._covergroups.get(name)
+
+    def get_coverage(self) -> Dict[str, float]:
+        """
+        获取所有覆盖率组的覆盖率
+
+        Returns:
+            覆盖率组名到覆盖率百分比的映射
+
+        Example:
+            >>> coverage = pkt.get_coverage()
+            >>> print(coverage)
+            {'packet_cg': 85.5, 'addr_cg': 92.3}
+        """
+        return {
+            name: cg.get_coverage()
+            for name, cg in self._covergroups.items()
+        }
+
+    def get_total_coverage(self) -> float:
+        """
+        计算总覆盖率（所有覆盖率组的加权平均）
+
+        Returns:
+            总覆盖率百分比 (0.0 - 100.0)
+
+        Example:
+            >>> total = pkt.get_total_coverage()
+            >>> print(f"Total coverage: {total:.2f}%")
+        """
+        if not self._covergroups:
+            return 0.0
+
+        total_coverage = sum(cg.get_coverage() for cg in self._covergroups.values())
+        return total_coverage / len(self._covergroups)
+
+    def _sample_coverage(self) -> None:
+        """
+        采样所有覆盖率组（内部方法）
+
+        在randomize()后自动调用
+        收集当前所有变量值并触发采样
+        """
+        # 收集当前所有变量值
+        sample_values = {}
+        for var_name in self.list_rand_vars():
+            if hasattr(self, var_name):
+                value = getattr(self, var_name, None)
+                if value is not None:
+                    sample_values[var_name] = value
+
+        # 采样所有CoverGroups
+        for cg in self._covergroups.values():
+            if cg.is_sampling_enabled():
+                cg.sample(**sample_values)
+
+    def enable_coverage_sampling(self) -> None:
+        """启用自动覆盖率采样"""
+        self._coverage_auto_sample = True
+
+    def disable_coverage_sampling(self) -> None:
+        """禁用自动覆盖率采样"""
+        self._coverage_auto_sample = False
