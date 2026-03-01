@@ -43,8 +43,9 @@ Thumbs.db
 htmlcov/
 *.cover
 
-# Claude Code
+# Claude Code（但保留skills目录）
 .claude/
+!.claude/skills/
 
 # Logs
 *.log
