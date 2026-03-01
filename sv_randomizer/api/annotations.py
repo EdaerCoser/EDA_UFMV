@@ -93,6 +93,23 @@ def extract_randc_metadata(hint: Any) -> RandC:
     args = get_args(hint)
     return args[1]
 
-__all__ = ['Rand', 'RandC', 'RandEnum', 'rand', 'randc',
+
+def constraint(func):
+    """
+    约束装饰器 - 标记约束方法
+
+    使用方式:
+        @constraint
+        def my_constraint(self):
+            return self.x > 0
+
+    被装饰的方法将在Randomizable初始化时被解析，
+    其返回的Python表达式会被转换为Expression对象
+    """
+    func._is_constraint = True
+    return func
+
+
+__all__ = ['Rand', 'RandC', 'RandEnum', 'rand', 'randc', 'constraint',
            'is_rand_annotation', 'is_randc_annotation', 'is_rand_enum_annotation',
            'extract_rand_metadata', 'extract_randc_metadata']

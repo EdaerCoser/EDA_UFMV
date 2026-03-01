@@ -165,6 +165,9 @@ class Randomizable(metaclass=RandomizableMeta):
         self._covergroups: Dict[str, Any] = {}  # CoverGroup instances
         self._coverage_auto_sample = True  # Auto-sample on randomize
 
+        # v0.3.0: 解析约束方法
+        self._parse_constraints()
+
     def pre_randomize(self) -> None:
         """
         随机化前回调
@@ -173,6 +176,61 @@ class Randomizable(metaclass=RandomizableMeta):
         例如：设置非随机变量的值、动态启用/禁用变量
         """
         pass
+
+    def _parse_constraints(self) -> None:
+        """
+        解析所有约束方法，将Python表达式转换为Expression
+
+        v0.3.0: 新增支持，自动解析@constraint装饰的方法
+        """
+        import ast
+        import inspect
+        import textwrap
+
+        # 遍历类的所有属性
+        for attr_name in dir(self.__class__):
+            if attr_name.startswith('_'):
+                continue
+
+            attr = getattr(self.__class__, attr_name, None)
+            if attr is None:
+                continue
+
+            # 检查是否为约束方法
+            if hasattr(attr, '_is_constraint'):
+                try:
+                    # 获取方法的源代码
+                    source = inspect.getsource(attr)
+                    # 去除缩进
+                    source = textwrap.dedent(source)
+
+                    # 解析AST，提取return语句后的表达式
+                    tree = ast.parse(source)
+                    function_node = tree.body[0]
+
+                    # 找到return语句
+                    return_stmt = None
+                    for node in ast.walk(function_node):
+                        if isinstance(node, ast.Return) and node.value is not None:
+                            return_stmt = node
+                            break
+
+                    if return_stmt is None:
+                        continue
+
+                    # 将Python表达式转换为Expression
+                    from ..api.expression import parse_python_expression
+                    expr_str = ast.unparse(return_stmt.value)
+                    expr = parse_python_expression(expr_str, self)
+
+                    # 创建约束对象
+                    from ..constraints.base import ExpressionConstraint
+                    constraint_obj = ExpressionConstraint(attr_name, expr)
+                    self.add_constraint(constraint_obj)
+
+                except Exception as e:
+                    import warnings
+                    warnings.warn(f"Failed to parse constraint '{attr_name}': {e}")
 
     def post_randomize(self) -> None:
         """
