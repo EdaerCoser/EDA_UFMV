@@ -13,6 +13,10 @@ from ..constraints.base import Constraint
 from ..solvers.solver_factory import SolverFactory
 from ..utils.exceptions import ConstraintConflictError, UnsatisfiableError
 
+# Coverage system integration (v0.2.0)
+# Coverage is now an independent top-level module
+from coverage.core import CoverGroup
+
 
 class Randomizable:
     """

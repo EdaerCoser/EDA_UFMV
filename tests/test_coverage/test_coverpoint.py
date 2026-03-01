@@ -6,8 +6,8 @@ sampling, coverage calculation, and ignore/illegal bins.
 """
 
 import pytest
-from sv_randomizer.coverage.core.coverpoint import CoverPoint, BinType
-from sv_randomizer.coverage.core.bin import IllegalBinHitError
+from coverage.core.coverpoint import CoverPoint, BinType
+from coverage.core.bin import IllegalBinHitError
 
 
 class TestCoverPointInit:

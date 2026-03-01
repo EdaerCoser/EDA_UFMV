@@ -9,8 +9,8 @@ import tempfile
 import os
 from pathlib import Path
 
-from sv_randomizer.coverage.core import Cross, CrossBuilder, create_cross, CoverGroup, CoverPoint
-from sv_randomizer.coverage.formatters import (
+from coverage.core import Cross, CrossBuilder, create_cross, CoverGroup, CoverPoint
+from coverage.formatters import (
     HTMLCoverageReport,
     JSONCoverageReport,
     UCISCoverageReport,
@@ -310,14 +310,14 @@ class TestConvenienceFunctions:
 
     def test_create_report(self):
         """测试create_report函数"""
-        from sv_randomizer.coverage.formatters import create_report
+        from coverage.formatters import create_report
 
         reporter = create_report("html")
         assert isinstance(reporter, HTMLCoverageReport)
 
     def test_generate_report(self):
         """测试generate_report函数"""
-        from sv_randomizer.coverage.formatters import generate_report
+        from coverage.formatters import generate_report
 
         data = {
             "title": "Test",

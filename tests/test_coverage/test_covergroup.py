@@ -6,8 +6,8 @@ sampling coordination, coverage calculation, and callbacks.
 """
 
 import pytest
-from sv_randomizer.coverage.core.covergroup import CoverGroup
-from sv_randomizer.coverage.core.coverpoint import CoverPoint
+from coverage.core.covergroup import CoverGroup
+from coverage.core.coverpoint import CoverPoint
 
 
 class TestCoverGroupInit:

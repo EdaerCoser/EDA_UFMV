@@ -8,7 +8,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
-[![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.2.0-green.svg)](CHANGELOG.md)
 [![Tests](https://img.shields.io/badge/tests-36%20passed-success.svg)](tests/legacy/)
 
 [快速开始](#快速开始) • [文档](#文档) • [示例](#示例) • [路线图](#产品路线图)
@@ -35,7 +35,9 @@
 
 ## ✨ 主要特性
 
-### 当前版本 (v0.1.0)
+### 当前版本 (v0.2.0)
+
+**核心随机化模块** (sv_randomizer):
 
 - ✅ **rand/randc变量** - 标准随机变量和循环随机变量
 - ✅ **约束系统** - 支持`inside`、`dist`、关系/逻辑运算符和条件约束
@@ -43,9 +45,16 @@
 - ✅ **种子管理** - 全局/对象级/临时种子，确保测试可重现性
 - ✅ **回归测试** - 内置测试守护agent，自动检测代码变更
 
+**功能覆盖率系统** (coverage - 独立模块):
+
+- ✅ **CoverGroup/CoverPoint** - SystemVerilog风格的覆盖率定义
+- ✅ **Bin系统** - 6种bin类型（值/范围/通配符/自动/忽略/非法）
+- ✅ **Cross覆盖** - 多变量交叉覆盖率
+- ✅ **报告生成器** - HTML/JSON/UCIS三种格式
+- ✅ **数据库后端** - 内存/文件双后端支持
+
 ### 规划中功能
 
-- 📋 **功能覆盖率系统** (v0.2.0) - CoverGroup/CoverPoint/Cross覆盖
 - 📋 **寄存器模型系统** (v0.3.0) - 类似UVM RGM的寄存器抽象
 - 📋 **随机化增强** (v0.4.0) - 覆盖率引导的智能随机化
 - 📋 **DUT配置转换** (v0.5.0) - Verilog到Python自动转换

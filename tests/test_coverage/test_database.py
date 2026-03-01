@@ -9,7 +9,7 @@ import tempfile
 import os
 from datetime import datetime
 
-from sv_randomizer.coverage.database import (
+from coverage.database import (
     MemoryCoverageDatabase,
     FileCoverageDatabase,
     DatabaseFactory,
@@ -292,7 +292,7 @@ class TestDatabaseFactory:
 
     def test_register_custom_backend(self):
         """测试注册自定义后端"""
-        from sv_randomizer.coverage.database.base import CoverageDatabase
+        from coverage.database.base import CoverageDatabase
 
         class CustomDatabase(CoverageDatabase):
             def record_sample(self, *args, **kwargs):
@@ -353,21 +353,21 @@ class TestConvenienceFunctions:
 
     def test_create_database(self):
         """测试create_database函数"""
-        from sv_randomizer.coverage.database import create_database
+        from coverage.database import create_database
 
         db = create_database("memory")
         assert isinstance(db, MemoryCoverageDatabase)
 
     def test_create_memory_database_func(self):
         """测试create_memory_database函数"""
-        from sv_randomizer.coverage.database import create_memory_database
+        from coverage.database import create_memory_database
 
         db = create_memory_database()
         assert isinstance(db, MemoryCoverageDatabase)
 
     def test_create_file_database_func(self):
         """测试create_file_database函数"""
-        from sv_randomizer.coverage.database import create_file_database
+        from coverage.database import create_file_database
 
         db = create_file_database("test.json")
         assert isinstance(db, FileCoverageDatabase)

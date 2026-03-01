@@ -11,7 +11,7 @@ sys.path.insert(0, '../..')
 
 from sv_randomizer.core.randomizable import Randomizable
 from sv_randomizer.core.variables import RandVar, RandCVar, VarType
-from sv_randomizer.coverage.core import CoverGroup, CoverPoint
+from coverage.core import CoverGroup, CoverPoint
 
 
 class Packet(Randomizable):

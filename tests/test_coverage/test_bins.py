@@ -6,7 +6,7 @@ IgnoreBin, and IllegalBin.
 """
 
 import pytest
-from sv_randomizer.coverage.core.bin import (
+from coverage.core.bin import (
     Bin, ValueBin, RangeBin, WildcardBin, AutoBin,
     IgnoreBin, IllegalBin, IllegalBinHitError
 )

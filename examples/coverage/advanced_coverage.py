@@ -17,8 +17,8 @@ sys.path.insert(0, '../..')
 
 from sv_randomizer.core.randomizable import Randomizable
 from sv_randomizer.core.variables import RandVar, RandCVar, VarType
-from sv_randomizer.coverage.core import CoverGroup, CoverPoint
-from sv_randomizer.coverage.api import covergroup, coverpoint, sample_coverage
+from coverage.core import CoverGroup, CoverPoint
+from coverage.api import covergroup, coverpoint, sample_coverage
 
 
 class Transaction(Randomizable):
