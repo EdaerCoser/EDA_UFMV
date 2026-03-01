@@ -12,6 +12,7 @@ from .bin import (
     IllegalBin,
     IllegalBinHitError
 )
+from .cross import Cross, CrossBuilder, create_cross
 
 __all__ = [
     "CoverGroup",
@@ -25,4 +26,7 @@ __all__ = [
     "IgnoreBin",
     "IllegalBin",
     "IllegalBinHitError",
+    "Cross",
+    "CrossBuilder",
+    "create_cross",
 ]
