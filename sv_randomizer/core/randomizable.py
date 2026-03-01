@@ -6,6 +6,7 @@ Randomizable基类
 
 from typing import Any, Dict, List, Optional, get_type_hints
 import random
+import copy
 
 from .variables import RandVar, RandCVar, VarType
 from .seeding import create_random_instance
@@ -138,8 +139,19 @@ class Randomizable(metaclass=RandomizableMeta):
         Args:
             seed: 随机种子，None则使用全局种子
         """
-        self._rand_vars: Dict[str, RandVar] = {}
-        self._randc_vars: Dict[str, RandCVar] = {}
+        # v0.3.0: 保留类级别的变量（由元类创建），而不是创建新的空字典
+        # 使用深拷贝避免实例间共享变量对象
+        cls = self.__class__
+        if hasattr(cls, '_rand_vars') and cls._rand_vars:
+            self._rand_vars = {k: copy.deepcopy(v) for k, v in cls._rand_vars.items()}
+        else:
+            self._rand_vars = {}
+
+        if hasattr(cls, '_randc_vars') and cls._randc_vars:
+            self._randc_vars = {k: copy.deepcopy(v) for k, v in cls._randc_vars.items()}
+        else:
+            self._randc_vars = {}
+
         self._constraints: List[Constraint] = []
         self._constraint_modes: Dict[str, bool] = {}
         self._var_modes: Dict[str, bool] = {}
@@ -174,6 +186,76 @@ class Randomizable(metaclass=RandomizableMeta):
         # 自动采样覆盖率（如果启用）
         if self._coverage_auto_sample and self._covergroups:
             self._sample_coverage()
+
+    def __getattr__(self, name: str) -> Any:
+        """
+        支持通过self.xxx访问随机变量值
+
+        v0.3.0: 新增类型注解支持，允许直接访问注解定义的随机变量
+        """
+        # 防止无限递归（__getattr__不会触发__dict__查找）
+        if name.startswith('_'):
+            raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{name}'")
+
+        # 检查实例的_rand_vars
+        if '_rand_vars' in self.__dict__ and name in self._rand_vars:
+            var = self._rand_vars[name]
+            return getattr(var, 'value', None)
+
+        # 检查实例的_randc_vars
+        if '_randc_vars' in self.__dict__ and name in self._randc_vars:
+            var = self._randc_vars[name]
+            return getattr(var, 'value', None)
+
+        # 检查类级别的_rand_vars（元类创建的）
+        cls = self.__class__
+        if hasattr(cls, '_rand_vars') and name in cls._rand_vars:
+            # 从实例字典获取值，如果不存在则返回None
+            if name in self.__dict__:
+                return self.__dict__[name]
+            var = cls._rand_vars[name]
+            return getattr(var, 'value', None)
+
+        if hasattr(cls, '_randc_vars') and name in cls._randc_vars:
+            if name in self.__dict__:
+                return self.__dict__[name]
+            var = cls._randc_vars[name]
+            return getattr(var, 'value', None)
+
+        raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{name}'")
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        """
+        支持设置随机变量值
+
+        v0.3.0: 新增类型注解支持
+        """
+        # 在初始化期间，正常设置所有属性
+        if not hasattr(self, '_rand_vars') or name in ('_rand_vars', '_randc_vars', '__dict__'):
+            super().__setattr__(name, value)
+            return
+
+        # 检查是否是随机变量
+        if name in self._rand_vars:
+            self._rand_vars[name].value = value
+            self.__dict__[name] = value
+        elif name in self._randc_vars:
+            self._randc_vars[name].value = value
+            self.__dict__[name] = value
+        # 检查类级别的变量
+        elif hasattr(self.__class__, '_rand_vars') and name in self.__class__._rand_vars:
+            # 确保实例有独立的_rand_vars
+            if name not in self._rand_vars:
+                self._rand_vars[name] = self.__class__._rand_vars[name]
+            self._rand_vars[name].value = value
+            self.__dict__[name] = value
+        elif hasattr(self.__class__, '_randc_vars') and name in self.__class__._randc_vars:
+            if name not in self._randc_vars:
+                self._randc_vars[name] = self.__class__._randc_vars[name]
+            self._randc_vars[name].value = value
+            self.__dict__[name] = value
+        else:
+            super().__setattr__(name, value)
 
     def set_seed(self, seed: Optional[int]) -> None:
         """
