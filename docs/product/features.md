@@ -20,13 +20,29 @@
 
 | 约束类型 | 说明 | 示例 |
 |:---|:---|:---|
-| **关系运算** | ==, !=, <, >, <=, >= | `VarProxy("x") > 10` |
-| **逻辑运算** | &&, \|\|, ! | `a.and(b).or(c)` |
-| **蕴含运算** | -> (implies) | `a.implies(b)` |
-| **inside约束** | 范围/值成员 | `x inside {[0:100], [200:300]}` |
+| **关系运算** | ==, !=, <, >, <=, >= | `"x > 10"` 或 `VarProxy("x") > 10` |
+| **逻辑运算** | &&, \|\|, ! | `"a && b"` 或 `a.and(b)` |
+| **蕴含运算** | -> (implies) | `"a -> b"` 或 `a.implies(b)` |
+| **inside约束** | 范围/值成员 | `"x in [0:100]"` 或 `x inside {[0:100]}` |
 | **dist约束** | 权重分布 | `value dist {0:=40, [1:10]:=60}` |
-| **算术运算** | +, -, *, /, % | `a + b` |
-| **位运算** | &, \|, ^, ~, <<, >> | `a & b` |
+| **算术运算** | +, -, *, /, % | `"a + b"` |
+| **位运算** | &, \|, ^, ~, <<, >> | `"a & b"` |
+
+**字符串约束表达式** (新特性 v0.2.0):
+- 支持类似SystemVerilog的字符串语法
+- 使用`@constraint("name", "expr")`定义
+- 更简洁、更接近SystemVerilog风格
+
+```python
+# 字符串表达式（推荐）
+@constraint("valid_addr", "src_addr >= 0x1000 && src_addr != dest_addr")
+def valid_addr_c(self): pass
+
+# 传统表达式（仍支持）
+@constraint("valid_addr")
+def valid_addr_c(self):
+    return VarProxy("src_addr") >= 0x1000 and VarProxy("src_addr") != VarProxy("dest_addr")
+```
 
 #### 1.3 求解器
 

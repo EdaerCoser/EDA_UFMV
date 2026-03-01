@@ -146,14 +146,26 @@ python .claude/skills/test-agent/runner.py --all
 
 ## 示例
 
+### 随机化示例
+
 | 示例 | 说明 | 功能点 |
 |:---|:---|:---|
 | [simple_test.py](examples/rand/simple_test.py) | 简单随机变量 | 基础rand/randc |
 | [packet_generator.py](examples/rand/packet_generator.py) | 数据包生成 | 约束系统 |
+| [seed_demo.py](examples/rand/seed_demo.py) | 种子控制 | 可重现性 |
+| [test_six_variables.py](examples/rand/test_six_variables.py) | 复杂约束 | 约束求解 |
+| [solve_inequalities.py](examples/rand/solve_inequalities.py) | 范围约束 | Inside约束 |
+
+### 覆盖率示例
+
+| 示例 | 说明 | 功能点 |
+|:---|:---|:---|
 | [basic_coverage.py](examples/coverage/basic_coverage.py) | 基础覆盖率 | CoverGroup/CoverPoint |
 | [advanced_coverage.py](examples/coverage/advanced_coverage.py) | 高级覆盖率 | Bin类型/Cross |
 
-更多示例请参阅 [examples/](examples/)
+更多示例请参阅:
+- [随机化示例](examples/rand/) - 完整的随机化系统示例
+- [覆盖率示例](examples/coverage/) - 完整的覆盖率系统示例
 
 ---
 

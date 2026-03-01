@@ -2,15 +2,19 @@
 
 本目录包含EDA_UFMV的随机化和约束系统使用示例。
 
+---
+
 ## 示例文件
 
 | 示例文件 | 说明 | 功能点 |
 |:---|:---|:---|
-| `simple_test.py` | 简单随机变量示例 | 基础rand/randc变量使用 |
-| `packet_generator.py` | 数据包生成示例 | 约束系统和随机化组合 |
-| `seed_demo.py` | 随机种子控制演示 | 种子管理和可重现性 |
-| `test_six_variables.py` | 六元方程组约束求解 | 复杂约束系统验证 |
-| `solve_inequalities.py` | 不等式求解 | Inside约束使用 |
+| [simple_test.py](simple_test.py) | 简单随机变量示例 | 基础rand/randc变量使用 |
+| [packet_generator.py](packet_generator.py) | 数据包生成示例 | 约束系统和随机化组合 |
+| [seed_demo.py](seed_demo.py) | 随机种子控制演示 | 种子管理和可重现性 |
+| [test_six_variables.py](test_six_variables.py) | 六元方程组约束求解 | 复杂约束系统验证 |
+| [solve_inequalities.py](solve_inequalities.py) | 不等式求解 | Inside约束使用 |
+
+---
 
 ## 运行示例
 
@@ -23,51 +27,79 @@ python examples/rand/test_six_variables.py
 python examples/rand/solve_inequalities.py
 ```
 
+---
+
 ## 示例说明
 
-### 1. simple_test.py
+### 1. simple_test.py - 简单随机变量
 
-最简单的随机化示例，演示：
+**功能**: 最简单的随机化示例
+
+演示内容：
 - 创建Randomizable类
 - 定义rand和randc变量
 - 执行randomize()
 
-### 2. packet_generator.py
+**适用场景**: 学习基础随机化
 
-数据包生成示例，演示：
+---
+
+### 2. packet_generator.py - 数据包生成
+
+**功能**: 数据包生成示例
+
+演示内容：
 - 多个随机变量组合
-- 地址约束
+- 地址约束（源地址 >= 0x1000）
 - 循环随机变量（randc）
 
-### 3. seed_demo.py
+**适用场景**: 学习约束系统
 
-种子控制演示，展示：
-- 全局种子设置
-- 对象级种子
-- 临时种子
+---
+
+### 3. seed_demo.py - 随机种子控制
+
+**功能**: 种子控制演示
+
+演示内容：
+- 全局种子设置（set_global_seed）
+- 对象级种子（Packet(seed=123)）
+- 临时种子（randomize(seed=456)）
 - 可重现性验证
 
-### 4. test_six_variables.py
+**适用场景**: 学习种子管理和测试可重现性
 
-六元方程组测试，验证：
-- 复杂约束求解
+---
+
+### 4. test_six_variables.py - 六元方程组
+
+**功能**: 复杂约束系统验证
+
+演示内容：
+- 六个变量的复杂约束
 - 多变量约束系统
-- 求解器性能
+- 求解器性能验证
 
-### 5. solve_inequalities.py
+**适用场景**: 验证约束求解能力
 
-不等式求解示例，包含：
+---
+
+### 5. solve_inequalities.py - 不等式求解
+
+**功能**: Inside约束使用
+
+演示内容：
 - Inside约束使用
 - 范围约束
 - 多种约束组合
 
+**适用场景**: 学习范围约束
+
+---
+
 ## 更多示例
 
-- `examples/coverage/` - 功能覆盖率示例（规划中v0.2.0）
-- `examples/rgm/` - 寄存器模型示例（规划中v0.3.0）
-- `examples/parser/` - DUT解析示例（规划中v0.5.0）
-- `examples/enhanced_rand/` - 覆盖率引导随机化（规划中v0.4.0）
-
-详细文档请参考：
-- [产品说明书 - 随机化系统](../../docs/product/PRODUCT_MANUAL.md)
-- [用户指南](../../docs/product/USER_GUIDE.md)（规划中）
+- [examples/coverage/](../coverage/) - 功能覆盖率示例
+- 详细文档请参考:
+  - [随机化使用指南](../../docs/guides/randomization.md)
+  - [产品功能清单](../../docs/product/features.md)
