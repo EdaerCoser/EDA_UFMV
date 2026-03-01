@@ -3,13 +3,7 @@ Pytest配置和共享fixtures
 """
 
 import pytest
-from .helpers.scenario_generators import (
-    create_n_vars_object,
-    create_simple_object,
-    create_medium_object,
-    create_large_object,
-    create_stress_object
-)
+from .helpers.scenario_generators import create_n_vars_object
 
 
 @pytest.fixture(scope="session")
