@@ -13,6 +13,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.3.1] - 2026-03-01
+
+### Added
+
+- **全新的类型注解API**
+  - 使用PEP 593 Annotated类型进行变量定义
+  - rand/randc类型注解替代装饰器语法
+  - 更简洁、更Pythonic的API设计
+
+- **原生Python表达式约束**
+  - @constraint装饰器支持原生Python表达式
+  - Python AST到Expression AST的自动转换
+  - 支持链式比较、and/or逻辑运算
+  - 完全兼容Python语法（self.xxx访问变量）
+
+- **Randomizable元类系统**
+  - 自动解析类型注解并创建RandVar/RandCVar
+  - 支持直接属性访问（obj.value代替obj._rand_vars['value']）
+  - 实例隔离（深拷贝避免状态共享）
+
+- **API统一导出**
+  - 所有API从sv_randomizer.api统一导入
+  - seed便捷别名（set_global_seed的缩写）
+  - 简化的导入路径
+
+- **完整文档**
+  - [v0.3迁移指南](docs/guides/migration-v0.3.md) - 旧API到新API的迁移指南
+  - [API参考文档](docs/product/API_REFERENCE.md) - 完整的API参考
+  - 更新README和示例代码
+
+### Changed
+
+- **示例代码更新**
+  - 所有示例更新为使用新API
+  - 代码量减少约40%，可读性大幅提升
+  - simple_test.py, packet_generator.py等示例全面更新
+
+### Removed
+
+- **旧装饰器API**
+  - 移除@rand/@randc装饰器（使用类型注解替代）
+  - 移除constraints()方法（使用@constraint装饰器替代）
+  - 删除sv_randomizer/api/decorators.py和dsl.py（功能合并到annotations.py）
+
+### Statistics
+
+- **修改文件数**: 9个核心文件
+- **新增文件数**: 2个（API参考、迁移指南）
+- **新增测试数**: 28个新API测试
+- **代码减少**: ~270行（移除旧API模块）
+- **测试通过率**: 100% (28个新测试 + 36个遗留测试)
+
+### Migration Notes
+
+从v0.3.0升级到v0.3.1需要更新代码以使用新API：
+
+- 旧API（装饰器）仍可工作但推荐迁移
+- 详见 [迁移指南](docs/guides/migration-v0.3.md)
+
+---
+
 ## [0.3.0] - 2026-02-28
 
 ### Added

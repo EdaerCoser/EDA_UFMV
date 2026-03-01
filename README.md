@@ -83,23 +83,30 @@ pip install -e .
 ### 第一个示例
 
 ```python
-from sv_randomizer import Randomizable, rand, constraint
+from sv_randomizer import Randomizable
+from sv_randomizer.api import rand, randc, constraint
+
+# 定义类型注解
+src_addr_rand = rand(int)(bits=16, min=0, max=65535)
+dest_addr_rand = rand(int)(bits=16, min=0, max=65535)
+packet_id_randc = randc(int)(bits=4)
 
 class Packet(Randomizable):
-    @rand(bit_width=16, min_val=0, max_val=65535)
-    def src_addr(self): return 0
+    # 使用类型注解定义变量
+    src_addr: src_addr_rand
+    dest_addr: dest_addr_rand
+    packet_id: packet_id_randc
 
-    @rand(bit_width=16, min_val=0, max_val=65535)
-    def dest_addr(self): return 0
-
-    @constraint("valid_addr", "src_addr >= 0x1000 && src_addr != dest_addr")
-    def valid_addr_c(self): pass
+    # 使用原生Python表达式定义约束
+    @constraint
+    def valid_addr(self):
+        return self.src_addr >= 0x1000 and self.src_addr != self.dest_addr
 
 # 使用
 pkt = Packet()
 for i in range(5):
     pkt.randomize()
-    print(f"src=0x{pkt.src_addr:04x}, dst=0x{pkt.dest_addr:04x}")
+    print(f"src=0x{pkt.src_addr:04x}, dst=0x{pkt.dest_addr:04x}, id={pkt.packet_id}")
 ```
 
 更多示例请参阅:
