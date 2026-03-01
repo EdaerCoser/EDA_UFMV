@@ -56,3 +56,6 @@ htmlcov/
 *.json
 test_temp*.json
 test_*.json
+
+# Git worktrees
+.worktrees/
