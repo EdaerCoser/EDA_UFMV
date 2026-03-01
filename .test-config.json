@@ -1,0 +1,28 @@
+{
+  "test_mapping": {
+    "core/": [
+      "tests/test_variables.py",
+      "tests/test_randomizable.py",
+      "tests/test_seeding.py"
+    ],
+    "constraints/": [
+      "tests/test_constraints.py",
+      "tests/test_expressions.py"
+    ],
+    "solvers/": [
+      "tests/test_solvers.py",
+      "tests/test_seeding.py"
+    ],
+    "formatters/": [
+      "tests/test_formatters.py"
+    ],
+    "examples/": []
+  },
+  "performance_threshold": {
+    "warning": 1.0,
+    "critical": 5.0
+  },
+  "enable_coverage": false,
+  "parallel_execution": false,
+  "max_workers": 4
+}
