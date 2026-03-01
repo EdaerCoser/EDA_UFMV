@@ -27,5 +27,6 @@ python basic_rgm_example.py
 
 ## 参考文档
 
+- [场景3：创建寄存器模型](../../docs/scenarios/03-create-regmodel.md) - 快速上手
 - [RGM用户指南](../../docs/product/RGM_GUIDE.md)
-- [SSH适配器指南](../../docs/guides/rgm/SSH_ADAPTER_GUIDE.md)
+- [SSH适配器指南](../../docs/reference/rgm/SSH_ADAPTER_GUIDE.md)

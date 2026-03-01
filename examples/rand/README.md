@@ -101,5 +101,6 @@ python examples/rand/solve_inequalities.py
 
 - [examples/coverage/](../coverage/) - 功能覆盖率示例
 - 详细文档请参考:
-  - [随机化使用指南](../../docs/guides/randomization.md)
+  - [场景1：生成随机激励](../../docs/scenarios/01-generate-random.md) - 快速上手
+  - [随机化完整参考](../../docs/reference/randomization.md) - API详细说明
   - [产品功能清单](../../docs/product/features.md)

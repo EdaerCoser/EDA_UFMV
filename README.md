@@ -140,14 +140,24 @@ python .claude/skills/test-agent/runner.py --all
 - ✨ [功能清单](docs/product/features.md)
 - 🎯 [应用场景](docs/product/use-cases.md)
 
-### 使用指南
-- 🎲 [随机化系统](docs/guides/randomization.md)
-- 📊 [覆盖率系统](docs/guides/coverage/)
-  - [覆盖率概述](docs/guides/coverage/README.md)
-  - [SystemVerilog迁移指南](docs/guides/coverage/systemverilog-migration.md)
-- 🗄️ [寄存器模型系统](docs/guides/rgm/)
-  - [RGM用户指南](docs/product/RGM_GUIDE.md)
-  - [SSH适配器指南](docs/guides/rgm/SSH_ADAPTER_GUIDE.md)
+### 场景化文档（推荐新手）
+- 🎲 [生成随机测试激励](docs/scenarios/01-generate-random.md) - 随机化入门
+- 📊 [收集功能覆盖率](docs/scenarios/02-collect-coverage.md) - 覆盖率入门
+- 🗄️ [创建寄存器模型](docs/scenarios/03-create-regmodel.md) - RGM入门
+- 🔄 [从SystemVerilog迁移](docs/scenarios/04-migrate-from-sv.md) - 迁移指南
+
+**完整场景索引**: [docs/scenarios/](docs/scenarios/)
+
+### 概念参考
+- 🔄 [SystemVerilog→Python映射表](docs/concepts/sv-to-python-mapping.md) - **必读**
+- 🎲 [随机化深入](docs/concepts/randomization-deep-dive.md)
+- 📊 [覆盖率深入](docs/concepts/coverage-deep-dive.md)
+
+### 技术参考
+- 🎲 [随机化完整参考](docs/reference/randomization.md)
+- 📊 [覆盖率迁移详细参考](docs/reference/coverage/migration.md)
+- 🤖 [SV→Python转换器](docs/reference/sv-converter.md)
+- 🗄️ [SSH适配器指南](docs/reference/rgm/SSH_ADAPTER_GUIDE.md)
 
 ### 开发文档
 - 🗺️ [开发路线图](docs/development/ROADMAP.md)

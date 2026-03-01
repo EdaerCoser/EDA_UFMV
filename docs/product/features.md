@@ -181,7 +181,8 @@ def weighted_distribution(self):
 
 ## 相关文档
 
-- 📖 [随机化系统指南](../guides/randomization.md)
-- 📊 [覆盖率系统指南](../guides/coverage/)
+- 🎲 [场景1：生成随机激励](../scenarios/01-generate-random.md)
+- 📊 [场景2：收集覆盖率](../scenarios/02-collect-coverage.md)
+- 🔄 [SV→Python概念映射](../concepts/sv-to-python-mapping.md)
 - 🎯 [应用场景](use-cases.md)
 - 🔄 [与UVM对比](comparison.md)

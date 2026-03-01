@@ -108,7 +108,8 @@ class MyCoverage:
 - 对比验证结果
 
 #### 阶段3: 迁移 (1-3个月)
-- 使用 [SystemVerilog迁移指南](../guides/coverage/systemverilog-migration.md)
+- 使用 [场景4：从SystemVerilog迁移](../scenarios/04-migrate-from-sv.md)
+- 查看 [SV→Python概念映射](../concepts/sv-to-python-mapping.md)
 - 逐步迁移覆盖率定义
 - 并行验证一致性
 
@@ -164,4 +165,5 @@ class MyCoverage:
 - 📋 [产品概述](overview.md)
 - ✨ [功能清单](features.md)
 - 🎯 [应用场景](use-cases.md)
-- 📖 [使用指南](../guides/)
+- 🎲 [场景文档](../scenarios/) - 快速上手指南
+- 🔄 [SV→Python概念映射](../concepts/sv-to-python-mapping.md) - 完整对照表
