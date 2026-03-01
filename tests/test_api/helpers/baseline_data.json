@@ -1,0 +1,16 @@
+{
+  "small_5_vars_rate": 41697.0,
+  "medium_10_vars_rate": 31542.0,
+  "large_15_vars_rate": 25137.0,
+  "xlarge_20_vars_rate": 19946.0,
+  "simple_constraint_time": 0.000019,
+  "medium_constraint_time": 0.000038,
+  "complex_constraint_time": 0.000066,
+  "memory_10_vars_mb": 0.5,
+  "memory_30_vars_mb": 1.5,
+  "memory_50_vars_mb": 2.5,
+  "last_updated": "2026-03-01",
+  "solver_backend": "pure_python",
+  "platform": "windows",
+  "python_version": "3.13.5"
+}
