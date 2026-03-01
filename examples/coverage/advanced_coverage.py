@@ -75,10 +75,8 @@ class Transaction(Randomizable):
                 "low": [[0, 0x7F]],
                 "mid": [[0x80, 0xFF]],
                 "high": [[0x100, 0x1FF]],
-            },
-            ignore_bins={
                 # 忽略特定值（对应 ignore_bins reserved = {0};）
-                "reserved": [0],
+                "ignore": [0],
             }
         )
         self.addr_cg.add_coverpoint(addr_cp)
@@ -123,9 +121,7 @@ class Transaction(Randomizable):
             sample_expr="addr",
             bins={
                 "values": [0x0000, 0xFFFF],  # 正常值
-            },
-            illegal_bins={
-                "forbidden": [0xDEAD, 0xBEEF],  # 非法地址
+                "illegal": [0xDEAD, 0xBEEF],  # 非法地址
             }
         )
         self.wildcard_cg.add_coverpoint(illegal_cp)
@@ -209,7 +205,7 @@ def main():
         print(f"    Bin状态:")
         for bin_name, bin_info in list(cp_details['bins'].items())[:5]:  # 只显示前5个
             hit = bin_info['hit_count']
-            status = "✓" if hit > 0 else " "
+            status = "X" if hit > 0 else " "
             print(f"      [{status}] {bin_name}: {hit} 次")
 
     # 测试4: 演示手动采样
@@ -263,11 +259,6 @@ def main():
     print(f"\n总覆盖率: {txn.get_total_coverage():.2f}%")
 
     print("\n各CoverGroup覆盖率:")
-    for cg_name in txn.list_constraints():  # 使用方法获取covergroup列表
-        cg = txn.get_covergroup(cg_name)
-        if cg:
-            print(f"  {cg_name}: {cg.get_coverage():.2f}%")
-
     for cg_name, cg in txn._covergroups.items():
         print(f"  {cg_name}: {cg.get_coverage():.2f}%")
 
