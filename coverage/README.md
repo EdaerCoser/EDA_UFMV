@@ -69,7 +69,7 @@ generate_report(data, format="html", filepath="coverage.html")
 
 覆盖率系统与EDA_UFMV的随机化模块无缝集成。添加覆盖率后，`randomize()`会自动采样覆盖率。
 
-详见: [覆盖率系统指南](../docs/guides/coverage/)
+详见: [场景2：收集功能覆盖率](../docs/scenarios/02-collect-coverage.md)
 
 ---
 
@@ -84,8 +84,9 @@ generate_report(data, format="html", filepath="coverage.html")
 
 ## 文档
 
-- [覆盖率系统指南](../docs/guides/coverage/) - 完整使用教程
-- [SystemVerilog迁移指南](../docs/guides/coverage/systemverilog-migration.md) - SV到Python语法对照
+- [场景2：收集功能覆盖率](../docs/scenarios/02-collect-coverage.md) - 快速上手
+- [SV→Python概念映射](../docs/concepts/sv-to-python-mapping.md) - 语法对照
+- [覆盖率迁移详细参考](../docs/reference/coverage/migration.md) - SV迁移详解
 - [完整示例](../examples/coverage/) - 示例代码
 
 ---

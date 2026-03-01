@@ -8,6 +8,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+- **场景化文档系统** 🎯
+  - 新增 `docs/scenarios/` 目录 - 6个场景文档，按"我想做什么"组织
+  - 新增 `docs/concepts/` 目录 - 4个概念参考文档
+  - 三层文档架构：scenarios（快速上手）→ concepts（深入理解）→ reference（完整API）
+  - 详见：[场景索引](docs/scenarios/)
+
+### Changed
+
+- **文档结构重构** 📚
+  - `docs/guides/` 重构为 `docs/reference/`（技术参考）
+  - 移动 `migration-v0.3.md` 到 `docs/development/migration/`
+  - 移动 `sv-to-python-guide.md` 到 `docs/reference/sv-converter.md`
+  - 更新所有文档引用以匹配新结构
+  - 详见：[文档迁移指南](DOCUMENTATION_MIGRATION.md)
+
+- **README.md更新** 📖
+  - 添加三层文档架构说明
+  - 添加场景化文档导航
+  - 添加文档目录结构图
+
+### Migration Notes
+
+⚠️ **BREAKING CHANGE**: 文档URL结构变更
+- 所有 `docs/guides/` 下的链接已更新
+- 外部引用需更新为新URL
+- 参见 [DOCUMENTATION_MIGRATION.md](DOCUMENTATION_MIGRATION.md)
+
+---
+
+### Added (Future)
+
 - 覆盖率引导随机化 (v0.4.0 规划中)
 - DUT配置转换 (v0.5.0 规划中)
 

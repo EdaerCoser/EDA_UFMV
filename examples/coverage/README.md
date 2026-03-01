@@ -49,12 +49,13 @@ python advanced_coverage.py
 | `cross cp1, cp2;` | `Cross("name", ["cp1","cp2"])` | 交叉覆盖 |
 | `ignore_bins b = {0};` | `ignore_bins={"b": [0]}` | 忽略bins |
 
-**完整语法对照**: [SystemVerilog迁移指南](../../docs/guides/coverage/systemverilog-migration.md)
+**完整语法对照**: [SystemVerilog迁移指南](../../docs/reference/coverage/migration.md)
 
 ---
 
 ## 更多信息
 
-- [覆盖率系统指南](../../docs/guides/coverage/)
-- [完整API参考](../../docs/guides/coverage/api-reference.md) (规划中)
+- [场景2：收集功能覆盖率](../../docs/scenarios/02-collect-coverage.md) - 快速上手
+- [SV→Python概念映射](../../docs/concepts/sv-to-python-mapping.md) - 概念对照
+- [覆盖率迁移详细参考](../../docs/reference/coverage/migration.md) - SV迁移详解
 - [单元测试](../../tests/test_coverage/)

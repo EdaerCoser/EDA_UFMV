@@ -236,6 +236,6 @@ generate_report(data, format="html", filepath="coverage.html")
 ## 相关文档
 
 - ✨ [功能清单](features.md)
-- 📖 [随机化系统指南](../guides/randomization.md)
-- 📊 [覆盖率系统指南](../guides/coverage/)
+- 🎲 [场景1：生成随机激励](../scenarios/01-generate-random.md)
+- 📊 [场景2：收集覆盖率](../scenarios/02-collect-coverage.md)
 - 🔄 [与UVM对比](comparison.md)
