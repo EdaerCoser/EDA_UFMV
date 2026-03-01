@@ -1,4 +1,11 @@
-# SystemVerilog风格随机约束求解器 - 架构设计文档
+# ⚠️ 已归档 - SystemVerilog风格随机约束求解器 - 架构设计文档
+
+> **注意**: 本文档已过时，保留仅用于历史参考。请参阅 [development/ARCHITECTURE.md](../development/ARCHITECTURE.md) 获取最新架构文档。
+
+**归档日期**: 2026-03-01
+**替代文档**: [development/ARCHITECTURE.md](../development/ARCHITECTURE.md)
+
+---
 
 ## 文档概述
 

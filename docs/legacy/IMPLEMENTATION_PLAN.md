@@ -1,4 +1,11 @@
-# SystemVerilog风格随机约束求解器 - 实现计划
+# ⚠️ 已归档 - SystemVerilog风格随机约束求解器 - 实现计划
+
+> **注意**: 本文档已过时，保留仅用于历史参考。请参阅 [development/ROADMAP.md](../development/ROADMAP.md) 获取最新开发计划。
+
+**归档日期**: 2026-03-01
+**替代文档**: [development/ROADMAP.md](../development/ROADMAP.md)
+
+---
 
 ## 项目概述
 

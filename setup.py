@@ -1,4 +1,4 @@
-"""Setup configuration for sv_randomizer"""
+"""Setup configuration for EDA_UFMV"""
 
 from setuptools import setup, find_packages
 
@@ -6,14 +6,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="sv-randomizer",
-    version="0.1.0",
-    author="Your Name",
-    author_email="your.email@example.com",
-    description="SystemVerilog-style random constraint solver for Python",
+    name="eda-ufmv",
+    version="0.3.0",
+    author="EDA_UFMV Team",
+    author_email="support@eda-ufmv.org",
+    description="Universal Verification Framework for FPGA/Prototype Verification",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/sv-randomizer",
+    url="https://github.com/EdaerCoser/EDA_UFMV",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",

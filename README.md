@@ -8,8 +8,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
-[![Version](https://img.shields.io/badge/version-0.2.0-green.svg)](CHANGELOG.md)
-[![Tests](https://img.shields.io/badge/tests-141%20passed-success.svg)](tests/test_coverage/)
+[![Version](https://img.shields.io/badge/version-0.3.0-green.svg)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/tests-186%2B%20passed-success.svg)](tests/test_rgm/)
 
 [快速开始](#快速开始) • [文档](docs/) • [示例](examples/) • [贡献](#贡献)
 
@@ -35,7 +35,7 @@
 
 ## 主要特性
 
-### 当前版本 (v0.2.0)
+### 当前版本 (v0.3.0)
 
 **核心随机化模块** (`sv_randomizer`):
 
@@ -53,9 +53,16 @@
 - ✅ 多格式报告 - HTML/JSON/UCIS
 - ✅ 数据库后端 - 内存/文件双后端
 
+**寄存器模型系统** (`rgm` - 独立模块):
+
+- ✅ 层次化寄存器建模 - Field/Register/RegisterBlock
+- ✅ 15种访问类型 - RW, RO, WO, W1C, W1S, W0C, W0S, RC, RS等
+- ✅ UVM兼容接口 - set/get/update/mirror/poke/peek
+- ✅ 硬件适配器 - AXI, APB, UART, SSH远程访问
+- ✅ 代码生成器 - Verilog RTL, C头文件, Python模型
+
 ### 规划中功能
 
-- 📋 寄存器模型系统 (v0.3.0)
 - 📋 覆盖率引导随机化 (v0.4.0)
 - 📋 DUT配置转换 (v0.5.0)
 
@@ -114,7 +121,7 @@ python run_coverage_tests.py
 python .claude/skills/test-agent/runner.py --all
 ```
 
-**测试覆盖**: 141个测试，100%通过率
+**测试覆盖**: 186+个测试通过（覆盖率系统141 + RGM 186+）
 
 ---
 
@@ -131,6 +138,9 @@ python .claude/skills/test-agent/runner.py --all
 - 📊 [覆盖率系统](docs/guides/coverage/)
   - [覆盖率概述](docs/guides/coverage/README.md)
   - [SystemVerilog迁移指南](docs/guides/coverage/systemverilog-migration.md)
+- 🗄️ [寄存器模型系统](docs/guides/rgm/)
+  - [RGM用户指南](docs/product/RGM_GUIDE.md)
+  - [SSH适配器指南](docs/guides/rgm/SSH_ADAPTER_GUIDE.md)
 
 ### 开发文档
 - 🗺️ [开发路线图](docs/development/ROADMAP.md)
@@ -163,9 +173,17 @@ python .claude/skills/test-agent/runner.py --all
 | [basic_coverage.py](examples/coverage/basic_coverage.py) | 基础覆盖率 | CoverGroup/CoverPoint |
 | [advanced_coverage.py](examples/coverage/advanced_coverage.py) | 高级覆盖率 | Bin类型/Cross |
 
+### 寄存器模型示例
+
+| 示例 | 说明 | 功能点 |
+|:---|:---|:---|
+| [basic_rgm_example.py](examples/rgm/basic_rgm_example.py) | 基础RGM | Field/Register/RegisterBlock |
+| [code_generator_example.py](examples/rgm/code_generator_example.py) | 代码生成 | Verilog/C/Python生成 |
+
 更多示例请参阅:
 - [随机化示例](examples/rand/) - 完整的随机化系统示例
 - [覆盖率示例](examples/coverage/) - 完整的覆盖率系统示例
+- [寄存器模型示例](examples/rgm/) - 完整的RGM系统示例
 
 ---
 
@@ -175,7 +193,7 @@ python .claude/skills/test-agent/runner.py --all
 |:---|:---|:---|
 | v0.1.0 | 随机化框架 | ✅ 已发布 |
 | v0.2.0 | 功能覆盖率系统 | ✅ 已发布 |
-| v0.3.0 | 寄存器模型系统 | 📋 规划中 |
+| v0.3.0 | 寄存器模型系统 | ✅ 已发布 |
 | v0.4.0 | 覆盖率引导随机化 | 📋 规划中 |
 | v0.5.0 | DUT配置转换 | 📋 规划中 |
 | v1.0.0 | 完整平台 | 📋 规划中 |

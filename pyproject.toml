@@ -1,0 +1,174 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eda-ufmv"
+version = "0.3.0"
+description = "Universal Verification Framework for FPGA/Prototype Verification"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+authors = [
+    {name = "EDA_UFMV Team", email = "support@eda-ufmv.org"}
+]
+maintainers = [
+    {name = "EDA_UFMV Team", email = "support@eda-ufmv.org"}
+]
+keywords = [
+    "verification",
+    "fpga",
+    "prototype",
+    "systemverilog",
+    "uvm",
+    "randomization",
+    "coverage",
+    "register-model",
+    "eda",
+    "testing",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=3.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "mypy>=0.950",
+    "isort>=5.0.0",
+]
+z3 = [
+    "z3-solver>=4.12.0",
+]
+stat = [
+    "numpy>=1.21.0",
+    "scipy>=1.7.0",
+]
+ssh = [
+    "paramiko>=3.0.0",
+]
+all = [
+    "eda-ufmv[dev,z3,stat,ssh]",
+]
+
+[project.urls]
+Homepage = "https://github.com/EdaerCoser/EDA_UFMV"
+Documentation = "https://github.com/EdaerCoser/EDA_UFMV/blob/main/docs/README.md"
+Repository = "https://github.com/EdaerCoser/EDA_UFMV"
+"Bug Tracker" = "https://github.com/EdaerCoser/EDA_UFMV/issues"
+Changelog = "https://github.com/EdaerCoser/EDA_UFMV/blob/main/CHANGELOG.md"
+
+[project.scripts]
+sv-rand = "sv_randomizer.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "sv_randomizer*",
+    "coverage*",
+    "rgm*",
+]
+exclude = [
+    "tests*",
+    "docs*",
+    "examples*",
+    ".github*",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+skip_gitignore = true
+skip = [
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".tox",
+    ".venv",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+exclude = [
+    "tests/",
+    "examples/",
+    "docs/",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-p no:qt"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["sv_randomizer", "coverage", "rgm"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__pycache__/*",
+    "*/site-packages/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "if typing.TYPE_CHECKING:",
+    "@abstract",
+]

@@ -8,7 +8,7 @@ SV Randomizer - SystemVerilog风格随机约束求解器
 - 仿真器格式输出 (Verilog/VHDL)
 """
 
-__version__ = "0.1.0"
+__version__ = "0.3.0"
 
 # 核心导出
 from .core.randomizable import Randomizable

@@ -19,6 +19,10 @@
   - [SystemVerilog迁移指南](coverage/systemverilog-migration.md) - SV到Python语法对照
   - [覆盖率API参考](coverage/api-reference.md) - 完整API文档
 
+- 🗄️ [寄存器模型系统](rgm/)
+  - [RGM概述](../product/RGM_GUIDE.md) - 完整RGM用户指南
+  - [SSH适配器指南](rgm/SSH_ADAPTER_GUIDE.md) - SSH远程访问
+
 - ⚖️ [约束系统](constraints.md)
   - 约束表达式
   - 关系运算和逻辑运算
@@ -50,6 +54,16 @@
 | 使用Bin类型 | [SV迁移指南](coverage/systemverilog-migration.md) | Bin类型详解 |
 | Cross覆盖率 | [SV迁移指南](coverage/systemverilog-migration.md) | Cross覆盖率 |
 | 生成报告 | [覆盖率API](coverage/api-reference.md) | 报告生成 |
+
+### 寄存器模型相关
+
+| 主题 | 指南 | 章节 |
+|:---|:---|:---|
+| 创建寄存器模型 | [RGM指南](../product/RGM_GUIDE.md) | 快速开始 |
+| 字段访问类型 | [RGM指南](../product/RGM_GUIDE.md) | 访问类型 |
+| UVM风格接口 | [RGM指南](../product/RGM_GUIDE.md) | UVM接口 |
+| SSH远程访问 | [SSH适配器](rgm/SSH_ADAPTER_GUIDE.md) | 远程板卡 |
+| 代码生成 | [RGM指南](../product/RGM_GUIDE.md) | 代码生成 |
 
 ---
 

@@ -1,13 +1,31 @@
-# 寄存器模型示例
+# RGM 寄存器模型示例
 
-本目录包含寄存器模型系统的使用示例。
+本目录包含EDA_UFMV RGM (Register Model) 系统的使用示例。
 
-**规划版本**: v0.3.0
+## 示例列表
 
-**示例内容**（规划中）：
-- 寄存器定义和层次化组织
-- 字段访问控制（RW/RO/WO/W1C等）
-- 前门/后门访问
-- RTL代码生成
+### 基础示例
 
-详细文档请参考：[产品说明书 - 寄存器模型](../../docs/product/PRODUCT_MANUAL.md)
+| 示例文件 | 说明 | 主要功能 |
+|:---|:---|:---|
+| [basic_rgm_example.py](basic_rgm_example.py) | RGM基础用法 | Field, Register, RegisterBlock, 访问类型 |
+| [code_generator_example.py](code_generator_example.py) | 代码生成器 | Verilog, C, Python代码生成 |
+
+### 硬件访问示例
+
+| 示例文件 | 说明 | 主要功能 |
+|:---|:---|:---|
+| [axi_access_example.py](axi_access_example.py) | AXI总线访问 | AXIAdapter, FrontDoor |
+| [ssh_access_example.py](ssh_access_example.py) | SSH远程访问 | SSHAdapter, 远程单板访问 |
+
+## 快速开始
+
+```bash
+cd examples/rgm
+python basic_rgm_example.py
+```
+
+## 参考文档
+
+- [RGM用户指南](../../docs/product/RGM_GUIDE.md)
+- [SSH适配器指南](../../docs/guides/rgm/SSH_ADAPTER_GUIDE.md)
