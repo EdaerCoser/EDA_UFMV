@@ -1,4 +1,4 @@
-# EDA_UFMV
+# EDA_UFVM
 
 <div align="center">
 
@@ -19,7 +19,7 @@
 
 ## 项目概述
 
-**EDA_UFMV** 是一款基于Python的FPGA/原型验证通用工具库，提供从测试生成、覆盖率收集、寄存器管理到DUT配置转换的完整解决方案。该工具将SystemVerilog的验证能力带入Python生态系统，使工程师能够利用Python的丰富生态进行高效的硬件验证工作。
+**EDA_UFVM** 是一款基于Python的FPGA/原型验证通用工具库，提供从测试生成、覆盖率收集、寄存器管理到DUT配置转换的完整解决方案。该工具将SystemVerilog的验证能力带入Python生态系统，使工程师能够利用Python的丰富生态进行高效的硬件验证工作。
 
 ### 核心价值
 
@@ -80,8 +80,8 @@
 ### 安装
 
 ```bash
-git clone https://github.com/EdaerCoser/EDA_UFMV.git
-cd EDA_UFMV
+git clone https://github.com/EdaerCoser/EDA_UFVM.git
+cd EDA_UFVM
 pip install -e .
 ```
 
@@ -143,7 +143,7 @@ python .claude/skills/test-agent/runner.py --all
 
 ### 📚 文档架构
 
-EDA_UFMV采用**三层文档架构**，帮助您快速找到所需信息：
+EDA_UFVM采用**三层文档架构**，帮助您快速找到所需信息：
 
 ```
 docs/
@@ -278,7 +278,7 @@ docs/
 
 ## 与UVM对比
 
-EDA_UFMV相比UVM具有显著优势：
+EDA_UFVM相比UVM具有显著优势：
 - **语言**: Python (生态丰富) vs SystemVerilog (EDA专用)
 - **学习曲线**: 平缓 (Python基础) vs 陡峭 (OOP+验证方法学)
 - **开发效率**: 3-5倍提升
@@ -310,9 +310,9 @@ EDA_UFMV相比UVM具有显著优势：
 
 ## 联系方式
 
-- **项目主页**: https://github.com/EdaerCoser/EDA_UFMV
-- **问题反馈**: https://github.com/EdaerCoser/EDA_UFMV/issues
-- **讨论区**: https://github.com/EdaerCoser/EDA_UFMV/discussions
+- **项目主页**: https://github.com/EdaerCoser/EDA_UFVM
+- **问题反馈**: https://github.com/EdaerCoser/EDA_UFVM/issues
+- **讨论区**: https://github.com/EdaerCoser/EDA_UFVM/discussions
 
 ---
 
@@ -320,6 +320,6 @@ EDA_UFMV相比UVM具有显著优势：
 
 **[⬆ 返回顶部](#eda_ufmv)**
 
-Made with ❤️ by EDA_UFMV Team
+Made with ❤️ by EDA_UFVM Team
 
 </div>

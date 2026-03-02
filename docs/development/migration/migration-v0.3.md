@@ -432,7 +432,7 @@ def old_style_constraints(self):
 
 - 📖 查看 [API 参考文档](../product/API_REFERENCE.md)
 - 💡 查看 [示例代码](../../examples/)
-- 🐛 报告问题: [GitHub Issues](https://github.com/your-org/EDA_UFMV/issues)
+- 🐛 报告问题: [GitHub Issues](https://github.com/your-org/EDA_UFVM/issues)
 
 ---
 

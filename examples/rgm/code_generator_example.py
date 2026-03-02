@@ -52,7 +52,7 @@ def create_uart_model():
 def main():
     """主函数：演示代码生成器"""
     print("=" * 60)
-    print("EDA_UFMV RGM代码生成器示例")
+    print("EDA_UFVM RGM代码生成器示例")
     print("=" * 60)
 
     # 创建寄存器模型

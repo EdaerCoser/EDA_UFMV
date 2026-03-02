@@ -1,6 +1,6 @@
 # SystemVerilog → Python 概念映射表
 
-本文档提供SystemVerilog/UVM到Python的完整概念对照，帮助SV工程师快速理解EDA_UFMV。
+本文档提供SystemVerilog/UVM到Python的完整概念对照，帮助SV工程师快速理解EDA_UFVM。
 
 ---
 
@@ -8,7 +8,7 @@
 
 ### 随机化
 
-| SystemVerilog | Python (EDA_UFMV) | 示例 |
+| SystemVerilog | Python (EDA_UFVM) | 示例 |
 |---------------|-------------------|------|
 | `rand int x;` | `x: rand(int)(bits=32)` | 随机变量 |
 | `randc bit [3:0] id;` | `id: randc(int)(bits=4)` | 循环随机 |
@@ -126,7 +126,7 @@ class Transaction(Randomizable):
 
 ### 核心差异
 
-| 特性 | SystemVerilog | Python (EDA_UFMV) |
+| 特性 | SystemVerilog | Python (EDA_UFVM) |
 |:---|:---|:---|
 | **类型系统** | 静态类型，需指定位宽 | 动态类型，自动处理 |
 | **采样表达式** | 直接引用变量 | `sample_expr="var"` 或 callable |

@@ -7,7 +7,7 @@
 
 ## 概述
 
-EDA_UFMV的随机化系统提供SystemVerilog风格的约束随机化功能，支持：
+EDA_UFVM的随机化系统提供SystemVerilog风格的约束随机化功能，支持：
 - rand/randc随机变量（使用Python类型注解）
 - 原生Python表达式约束
 - 双求解器架构（PurePython/Z3）

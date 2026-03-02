@@ -1,7 +1,7 @@
 """
 RGM - Register Model System
 
-EDA_UFMV寄存器模型系统（v0.3.0）
+EDA_UFVM寄存器模型系统（v0.3.0）
 
 提供FPGA原型验证中的寄存器建模能力，支持：
 - Field（字段）、Register（寄存器）、RegisterBlock（寄存器块）的层次化建模

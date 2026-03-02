@@ -8,7 +8,7 @@
 
 ## 概述
 
-感谢您对EDA_UFMV的关注！我们欢迎各种形式的贡献。
+感谢您对EDA_UFVM的关注！我们欢迎各种形式的贡献。
 
 ---
 
@@ -16,7 +16,7 @@
 
 ### 报告问题
 
-在[GitHub Issues](https://github.com/EdaerCoser/EDA_UFMV/issues)中报告bug或提出功能建议。
+在[GitHub Issues](https://github.com/EdaerCoser/EDA_UFVM/issues)中报告bug或提出功能建议。
 
 ### 提交代码
 
@@ -86,4 +86,4 @@
 ---
 
 **最后更新**: 2026年3月1日
-**维护者**: EDA_UFMV开发团队
+**维护者**: EDA_UFVM开发团队

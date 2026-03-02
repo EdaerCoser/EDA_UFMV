@@ -59,7 +59,7 @@ class UCISCoverageReport(CoverageReport):
         timestamp = datetime.datetime.now().isoformat()
 
         return f"""    <info>
-        <generator>EDA_UFMV Coverage System</generator>
+        <generator>EDA_UFVM Coverage System</generator>
         <timestamp>{timestamp}</timestamp>
         <version>v0.2.0</version>
     </info>
@@ -132,7 +132,7 @@ class UCISJSONReport(CoverageReport):
         ucis_data = {
             "ucis_version": UCISCoverageReport.UCIS_VERSION,
             "namespace": UCISCoverageReport.UCIS_NAMESPACE,
-            "generator": "EDA_UFMV Coverage System",
+            "generator": "EDA_UFVM Coverage System",
             "timestamp": datetime.datetime.now().isoformat(),
             "covergroups": self._convert_to_ucis_format(coverage_data)
         }

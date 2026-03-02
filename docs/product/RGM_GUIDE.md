@@ -22,7 +22,7 @@
 
 ## 概述
 
-EDA_UFMV RGM (Register Model) 是一个类似UVM寄存器模型的Python实现，用于FPGA原型验证和硬件仿真。它提供了：
+EDA_UFVM RGM (Register Model) 是一个类似UVM寄存器模型的Python实现，用于FPGA原型验证和硬件仿真。它提供了：
 
 - **层次化寄存器建模** - Field → Register → RegisterBlock
 - **多种访问类型** - 支持15种AccessType（RW, RO, WO, W1C, W1S等）
@@ -764,5 +764,5 @@ class RegisterBlock:
 
 ---
 
-**文档维护**: EDA_UFMV开发团队
+**文档维护**: EDA_UFVM开发团队
 **最后更新**: 2026年3月1日

@@ -1,7 +1,7 @@
 """
-EDA_UFMV 包功能演示脚本
+EDA_UFVM 包功能演示脚本
 
-此脚本演示了如何使用EDA_UFMV的各个模块：
+此脚本演示了如何使用EDA_UFVM的各个模块：
 1. Randomization - 随机化功能
 2. Coverage - 功能覆盖率
 3. RGM - 寄存器模型
@@ -9,7 +9,7 @@ EDA_UFMV 包功能演示脚本
 """
 
 print("=" * 60)
-print("EDA_UFMV v0.3.0 - 功能演示")
+print("EDA_UFVM v0.3.0 - 功能演示")
 print("=" * 60)
 
 # 1. 测试 Randomization 模块

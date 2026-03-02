@@ -40,7 +40,7 @@ class JSONCoverageReport(CoverageReport):
             "version": "1.0",
             "title": coverage_data.get('title', self.title),
             "timestamp": datetime.datetime.now().isoformat(),
-            "generator": "EDA_UFMV Coverage System",
+            "generator": "EDA_UFVM Coverage System",
             "summary": self._generate_summary(coverage_data),
             "covergroups": self._process_covergroups(coverage_data)
         }

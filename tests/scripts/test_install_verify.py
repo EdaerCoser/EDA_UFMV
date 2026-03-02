@@ -1,11 +1,11 @@
 """
-EDA_UFMV 包安装验证脚本
+EDA_UFVM 包安装验证脚本
 
 验证所有模块是否可以正确导入
 """
 
 print("=" * 60)
-print("EDA_UFMV 包安装验证")
+print("EDA_UFVM 包安装验证")
 print("=" * 60)
 
 print("\n[1] 导入 Randomization 模块...")

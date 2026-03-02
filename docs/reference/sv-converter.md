@@ -2,7 +2,7 @@
 
 ## 概述
 
-SV to Python转换器将SystemVerilog中的UVM寄存器模型操作序列转换为使用EDA_UFMV RGM的Python配置脚本。
+SV to Python转换器将SystemVerilog中的UVM寄存器模型操作序列转换为使用EDA_UFVM RGM的Python配置脚本。
 
 **版本**: v0.5.0
 **状态**: Alpha
@@ -201,7 +201,7 @@ all: $(PYTHON_TASKS)
 
 ### 与RGM集成
 
-生成的代码可以与EDA_UFMV的RGM系统配合使用：
+生成的代码可以与EDA_UFVM的RGM系统配合使用：
 
 ```python
 from rgm import RegisterBlock, Register, Field
@@ -219,4 +219,4 @@ init_dma(channel=0, base_addr=0x1000_0000, length=1024)
 
 - 查看 [RGM用户指南](RGM_GUIDE.md) 了解如何使用寄存器模型
 - 查看示例代码：`examples/sv_to_python/`
-- 报告问题：EDA_UFMV GitHub Issues
+- 报告问题：EDA_UFVM GitHub Issues

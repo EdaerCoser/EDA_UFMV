@@ -8,7 +8,7 @@
 
 ## 概述
 
-构建一个工具，将SystemVerilog中的UVM寄存器模型操作序列转换为Python配置脚本。Python脚本使用EDA_UFMV的RGM（Register Model）系统，通过硬件适配器（SSH/AXI/APB）直接控制硬件。
+构建一个工具，将SystemVerilog中的UVM寄存器模型操作序列转换为Python配置脚本。Python脚本使用EDA_UFVM的RGM（Register Model）系统，通过硬件适配器（SSH/AXI/APB）直接控制硬件。
 
 **核心价值**：
 - 自动化从SV验证环境到Python生产环境的迁移
@@ -479,4 +479,4 @@ def init_dma(channel, base_addr, length):
 
 - UVM用户指南
 - SystemVerilog LRM
-- EDA_UFMV RGM文档
+- EDA_UFVM RGM文档

@@ -4,11 +4,11 @@
 
 ---
 
-## EDA_UFMV vs UVM
+## EDA_UFVM vs UVM
 
 ### 对比表格
 
-| 特性 | UVM | EDA_UFMV | 说明 |
+| 特性 | UVM | EDA_UFVM | 说明 |
 |:---|:---|:---|:---|
 | **语言** | SystemVerilog | Python | Python生态系统更丰富 |
 | **学习曲线** | 陡峭 | 平缓 | Python基础即可入门 |
@@ -31,7 +31,7 @@
 - 复杂的OOP层次结构
 - 编译-仿真循环耗时
 
-**EDA_UFMV**:
+**EDA_UFVM**:
 - Python简洁语法
 - 装饰器风格API
 - 即时运行，快速迭代
@@ -47,7 +47,7 @@ SystemVerilog基础
         → UVM phased验证
 ```
 
-**EDA_UFMV**:
+**EDA_UFVM**:
 ```
 Python基础
   → Randomizable类
@@ -62,7 +62,7 @@ Python基础
 - 专用工具集成
 - 第三方库有限
 
-**EDA_UFMV**:
+**EDA_UFVM**:
 - numpy (数值计算)
 - pytest (测试框架)
 - matplotlib (可视化)
@@ -80,7 +80,7 @@ covergroup cg @(posedge clk);
 endgroup
 ```
 
-**EDA_UFMV**:
+**EDA_UFVM**:
 ```python
 @covergroup("cg", sample_event="clk")
 class MyCoverage:
@@ -95,7 +95,7 @@ class MyCoverage:
 
 ## 迁移路径
 
-### 从UVM到EDA_UFMV
+### 从UVM到EDA_UFVM
 
 #### 阶段1: 评估 (1周)
 - 阅读 [产品概述](overview.md)
@@ -122,7 +122,7 @@ class MyCoverage:
 
 ## 选择建议
 
-### 适合选择EDA_UFMV的场景
+### 适合选择EDA_UFVM的场景
 
 - ✅ 需要快速开发验证环境
 - ✅ 需要集成数据分析工具
@@ -143,7 +143,7 @@ class MyCoverage:
 
 ### 随机化性能
 
-| 指标 | UVM (仿真器驱动) | EDA_UFMV (纯Python) | 提升倍数 |
+| 指标 | UVM (仿真器驱动) | EDA_UFVM (纯Python) | 提升倍数 |
 |:---|:---|:---|:---|
 | 简单随机化 | ~1,000次/秒 | ~10,000次/秒 | **10x** |
 | 约束求解 | ~100次/秒 | ~1,000次/秒 | **10x** |
@@ -151,7 +151,7 @@ class MyCoverage:
 
 ### 开发效率
 
-| 任务 | UVM | EDA_UFMV | 效率提升 |
+| 任务 | UVM | EDA_UFVM | 效率提升 |
 |:---|:---|:---|:---|
 | 定义随机变量 | 20行 | 5行 | **4x** |
 | 添加约束 | 15行 | 3行 | **5x** |

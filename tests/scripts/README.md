@@ -22,7 +22,7 @@ python tests/scripts/test_install_verify.py
 ```
 
 ### test_venv_demo.py / test_venv_demo_simple.py
-虚拟环境演示脚本，展示如何在不同环境中使用 EDA_UFMV。
+虚拟环境演示脚本，展示如何在不同环境中使用 EDA_UFVM。
 
 ```bash
 python tests/scripts/test_venv_demo.py

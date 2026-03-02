@@ -1,6 +1,6 @@
 # Authors
 
-EDA_UFMV is developed and maintained by the EDA_UFMV Team.
+EDA_UFVM is developed and maintained by the EDA_UFVM Team.
 
 ## Core Team
 
@@ -11,11 +11,11 @@ EDA_UFMV is developed and maintained by the EDA_UFMV Team.
 
 ## Contributors
 
-We welcome contributions from the community. If you have contributed to EDA_UFMV and your name is not listed here, please open a pull request to add yourself.
+We welcome contributions from the community. If you have contributed to EDA_UFVM and your name is not listed here, please open a pull request to add yourself.
 
 ## Acknowledgments
 
-EDA_UFMV draws inspiration from:
+EDA_UFVM draws inspiration from:
 - SystemVerilog IEEE 1800 standard
 - UVM (Universal Verification Methodology)
 - Python testing ecosystem (pytest, numpy, scipy)

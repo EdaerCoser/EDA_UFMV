@@ -10,10 +10,10 @@ readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.8"
 authors = [
-    {name = "EDA_UFMV Team", email = "support@eda-ufmv.org"}
+    {name = "EDA_UFVM Team", email = "support@eda-ufmv.org"}
 ]
 maintainers = [
-    {name = "EDA_UFMV Team", email = "support@eda-ufmv.org"}
+    {name = "EDA_UFVM Team", email = "support@eda-ufmv.org"}
 ]
 keywords = [
     "verification",
@@ -87,11 +87,11 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/EdaerCoser/EDA_UFMV"
-Documentation = "https://github.com/EdaerCoser/EDA_UFMV/blob/main/docs/README.md"
-Repository = "https://github.com/EdaerCoser/EDA_UFMV"
-"Bug Tracker" = "https://github.com/EdaerCoser/EDA_UFMV/issues"
-Changelog = "https://github.com/EdaerCoser/EDA_UFMV/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/EdaerCoser/EDA_UFVM"
+Documentation = "https://github.com/EdaerCoser/EDA_UFVM/blob/main/docs/README.md"
+Repository = "https://github.com/EdaerCoser/EDA_UFVM"
+"Bug Tracker" = "https://github.com/EdaerCoser/EDA_UFVM/issues"
+Changelog = "https://github.com/EdaerCoser/EDA_UFVM/blob/main/CHANGELOG.md"
 
 [project.scripts]
 sv-rand = "sv_randomizer.cli:main"

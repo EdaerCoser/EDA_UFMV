@@ -1,7 +1,7 @@
 """
 Advanced Coverage Example - 功能覆盖率高级示例
 
-这个示例展示了EDA_UFMV覆盖率系统的高级功能：
+这个示例展示了EDA_UFVM覆盖率系统的高级功能：
 - 使用装饰器定义覆盖率（SystemVerilog语法兼容）
 - 自动分箱（auto bins）
 - 通配符bins（wildcard bins）
@@ -150,7 +150,7 @@ def print_separator(title=""):
 def main():
     """主测试函数"""
 
-    print_separator("EDA_UFMV 功能覆盖率 - 高级示例")
+    print_separator("EDA_UFVM 功能覆盖率 - 高级示例")
 
     # 创建事务对象
     txn = Transaction()

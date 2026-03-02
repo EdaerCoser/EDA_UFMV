@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**目标:** 构建一个工具，将SystemVerilog中的UVM寄存器模型操作序列转换为使用EDA_UFMV RGM的Python配置脚本。
+**目标:** 构建一个工具，将SystemVerilog中的UVM寄存器模型操作序列转换为使用EDA_UFVM RGM的Python配置脚本。
 
 **架构:** 使用PyVerilog解析SystemVerilog文件生成AST，通过AST访问者模式提取UVM寄存器模型调用，转换为中间表示(IR)，最后使用Jinja2模板生成Python代码。
 
@@ -16,7 +16,7 @@
 
 在开始前，阅读：
 - `docs/plans/2026-03-01-sv-to-python-converter-design.md` - 完整设计说明
-- EDA_UFMV RGM文档: `docs/product/RGM_GUIDE.md` - 理解目标API
+- EDA_UFVM RGM文档: `docs/product/RGM_GUIDE.md` - 理解目标API
 
 ### 安装依赖
 

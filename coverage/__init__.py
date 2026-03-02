@@ -1,5 +1,5 @@
 """
-EDA_UFMV Coverage System
+EDA_UFVM Coverage System
 
 功能覆盖率系统实现，支持SystemVerilog风格的覆盖率定义。
 """

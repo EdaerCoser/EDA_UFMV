@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**EDA_UFMV** is a Python-based FPGA/prototype verification framework that brings SystemVerilog verification capabilities to the Python ecosystem. The project consists of two independent top-level modules:
+**EDA_UFVM** is a Python-based FPGA/prototype verification framework that brings SystemVerilog verification capabilities to the Python ecosystem. The project consists of two independent top-level modules:
 
 - **`sv_randomizer/`** - Core randomization framework with rand/randc variables, constraints, and dual solver architecture
 - **`coverage/`** - SystemVerilog-compatible functional coverage system with CoverGroup/CoverPoint/Cross support
@@ -74,7 +74,7 @@ This codebase consistently uses several design patterns across both modules:
 ### Module Independence
 
 **Critical**: The `coverage/` module is now an independent top-level module (not under `sv_randomizer/`). This separation provides:
-- Reusability outside EDA_UFMV
+- Reusability outside EDA_UFVM
 - Cleaner module boundaries
 - Independent versioning
 

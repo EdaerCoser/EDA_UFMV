@@ -1,7 +1,7 @@
 """
 RGM基础示例 - 寄存器模型系统核心功能
 
-展示EDA_UFMV寄存器模型系统的基本用法，包括：
+展示EDA_UFVM寄存器模型系统的基本用法，包括：
 - Field、Register、RegisterBlock的定义
 - UVM风格接口（set/get/update/mirror/poke/peek）
 - 字段读写操作
@@ -19,7 +19,7 @@ from rgm.core import Field, Register, RegisterBlock, AccessType
 def main():
     """主函数：演示RGM基础功能"""
     print("=" * 60)
-    print("EDA_UFMV RGM基础示例")
+    print("EDA_UFVM RGM基础示例")
     print("=" * 60)
 
     # ========== 1. 创建寄存器块 ==========

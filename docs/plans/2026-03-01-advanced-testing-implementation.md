@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**目标:** 为 EDA_UFMV v0.3.1 新API添加复杂约束测试和性能测试套件，验证系统在复杂场景下的正确性和性能。
+**目标:** 为 EDA_UFVM v0.3.1 新API添加复杂约束测试和性能测试套件，验证系统在复杂场景下的正确性和性能。
 
 **架构:**
 - 按场景拆分测试文件（协议/约束/摸高/性能）

@@ -9,7 +9,7 @@
 
 ## 概述
 
-独立的功能覆盖率系统，提供与SystemVerilog兼容的覆盖率定义、收集和报告功能。可作为EDA_UFMV的一部分使用，也可作为独立库集成到其他项目。
+独立的功能覆盖率系统，提供与SystemVerilog兼容的覆盖率定义、收集和报告功能。可作为EDA_UFVM的一部分使用，也可作为独立库集成到其他项目。
 
 ### 核心特性
 
@@ -67,7 +67,7 @@ generate_report(data, format="html", filepath="coverage.html")
 
 ## 与sv_randomizer集成
 
-覆盖率系统与EDA_UFMV的随机化模块无缝集成。添加覆盖率后，`randomize()`会自动采样覆盖率。
+覆盖率系统与EDA_UFVM的随机化模块无缝集成。添加覆盖率后，`randomize()`会自动采样覆盖率。
 
 详见: [场景2：收集功能覆盖率](../docs/scenarios/02-collect-coverage.md)
 

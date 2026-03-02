@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**目标:** 重构EDA_UFMV的随机化API，使用类型注解和Python原生表达式，减少50%样板代码，移除旧装饰器API（不兼容更新）。
+**目标:** 重构EDA_UFVM的随机化API，使用类型注解和Python原生表达式，减少50%样板代码，移除旧装饰器API（不兼容更新）。
 
 **架构:** 使用类型注解（PEP 593 Annotated）声明随机变量，通过元类解析注解并创建RandVar/RandCVar对象；使用Python AST访问者模式将原生Python表达式转换为框架的Expression AST。
 
@@ -1491,7 +1491,7 @@ git commit -m "docs: 添加v0.3到v0.3.1迁移指南
 **Step 1: 创建新API参考文档**
 
 ```markdown
-# EDA_UFMV API参考 (v0.3.1+)
+# EDA_UFVM API参考 (v0.3.1+)
 
 ## 类型注解API
 

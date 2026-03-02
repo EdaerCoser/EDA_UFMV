@@ -13,7 +13,7 @@ Currently supported versions with security updates:
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in EDA_UFMV, please report it responsibly.
+If you discover a security vulnerability in EDA_UFVM, please report it responsibly.
 
 ### How to Report
 
@@ -59,7 +59,7 @@ Please include:
 
 ## Security Features
 
-EDA_UFMV includes several security-conscious design features:
+EDA_UFVM includes several security-conscious design features:
 
 ### Randomization Security
 
@@ -103,6 +103,6 @@ For a complete list, see [setup.py](setup.py) or [pyproject.toml](pyproject.toml
 
 For general security questions:
 - Email: security@eda-ufmv.org
-- GitHub Security: https://github.com/EdaerCoser/EDA_UFMV/security
+- GitHub Security: https://github.com/EdaerCoser/EDA_UFVM/security
 
-Thank you for helping keep EDA_UFMV safe!
+Thank you for helping keep EDA_UFVM safe!

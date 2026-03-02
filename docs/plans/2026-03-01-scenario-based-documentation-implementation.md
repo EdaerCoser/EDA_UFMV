@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**目标:** 重新组织EDA_UFMV文档为场景化结构，使SystemVerilog工程师能快速上手并理解技术实现细节。
+**目标:** 重新组织EDA_UFVM文档为场景化结构，使SystemVerilog工程师能快速上手并理解技术实现细节。
 
 **架构:** 创建docs/scenarios/目录放置场景文档，docs/concepts/目录放置概念参考，每个场景遵循"快速开始→常见任务→技术实现→故障排查"的四层结构，技术实现包含框架架构、核心算法、设计模式、性能考虑和差异对比。
 
@@ -58,7 +58,7 @@ touch docs/scenarios/index.md
 ```markdown
 # 场景索引 - 您想做什么？
 
-欢迎来到EDA_UFMV场景化文档！本指南按"我想做什么"组织，帮助您快速找到解决方案。
+欢迎来到EDA_UFVM场景化文档！本指南按"我想做什么"组织，帮助您快速找到解决方案。
 
 ## 快速导航
 
@@ -174,7 +174,7 @@ touch .gitkeep index.md
 ```markdown
 # 概念参考
 
-概念文档深入解释EDA_UFMV的技术实现细节，帮助您理解框架是如何工作的。
+概念文档深入解释EDA_UFVM的技术实现细节，帮助您理解框架是如何工作的。
 
 ## 核心概念
 
@@ -270,7 +270,7 @@ touch docs/scenarios/01-generate-random.md
 
 如果你熟悉SystemVerilog，这相当于：
 
-| SystemVerilog | Python (EDA_UFMV) | 说明 |
+| SystemVerilog | Python (EDA_UFVM) | 说明 |
 |---------------|-------------------|------|
 | `rand int x;` | `x: rand(int)(bits=32)` | 随机变量声明 |
 | `randc bit [3:0] id;` | `id: randc(int)(bits=4)` | 循环随机变量 |
@@ -785,8 +785,8 @@ solver.pop()   # 恢复状态
 
 ```
 SystemVerilog仿真器:  ~1,000 randomizations/sec
-EDA_UFMV (PurePython): ~10,000 randomizations/sec (10x faster)
-EDA_UFMV (Z3):         ~1,000 randomizations/sec (similar)
+EDA_UFVM (PurePython): ~10,000 randomizations/sec (10x faster)
+EDA_UFVM (Z3):         ~1,000 randomizations/sec (similar)
 ```
 
 ---
@@ -1190,7 +1190,7 @@ touch docs/concepts/sv-to-python-mapping.md
 ```markdown
 # SystemVerilog → Python 概念映射表
 
-本文档提供SystemVerilog/UVM到Python的完整概念对照，帮助SV工程师快速理解EDA_UFMV。
+本文档提供SystemVerilog/UVM到Python的完整概念对照，帮助SV工程师快速理解EDA_UFVM。
 
 ---
 
@@ -1198,7 +1198,7 @@ touch docs/concepts/sv-to-python-mapping.md
 
 ### 随机化
 
-| SystemVerilog | Python (EDA_UFMV) | 示例 |
+| SystemVerilog | Python (EDA_UFVM) | 示例 |
 |---------------|-------------------|------|
 | `rand int x;` | `x: rand(int)(bits=32)` | 随机变量 |
 | `randc bit [3:0] id;` | `id: randc(int)(bits=4)` | 循环随机 |

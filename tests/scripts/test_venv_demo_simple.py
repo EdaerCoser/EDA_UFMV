@@ -1,11 +1,11 @@
 """
-EDA_UFMV 包功能演示脚本（简化版）
+EDA_UFVM 包功能演示脚本（简化版）
 
 演示主要模块的导入和基本功能
 """
 
 print("=" * 60)
-print("EDA_UFMV v0.3.0 - 功能演示")
+print("EDA_UFVM v0.3.0 - 功能演示")
 print("=" * 60)
 
 # 1. 测试 Randomization 模块

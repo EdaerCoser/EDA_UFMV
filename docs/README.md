@@ -1,6 +1,6 @@
-# EDA_UFMV 文档导航
+# EDA_UFVM 文档导航
 
-欢迎来到EDA_UFMV项目文档！本文档帮助你快速找到所需信息。
+欢迎来到EDA_UFVM项目文档！本文档帮助你快速找到所需信息。
 
 ---
 
@@ -8,7 +8,7 @@
 
 ### 我是新用户 → 开始这里
 
-- 📖 [项目概述](../README.md) - 了解EDA_UFMV是什么
+- 📖 [项目概述](../README.md) - 了解EDA_UFVM是什么
 - 💡 [示例代码](../examples/) - 从示例中学习
 - ✨ [功能清单](product/features.md) - 查看完整功能列表
 
@@ -77,7 +77,7 @@ docs/
 
 | 我想... | 查看文档 |
 |:---|:---|
-| 第一次使用EDA_UFMV | [项目概述](../README.md) → [场景文档](scenarios/) |
+| 第一次使用EDA_UFVM | [项目概述](../README.md) → [场景文档](scenarios/) |
 | 生成随机测试激励 | [场景1：生成随机激励](scenarios/01-generate-random.md) |
 | 收集功能覆盖率 | [场景2：收集覆盖率](scenarios/02-collect-coverage.md) |
 | 创建寄存器模型 | [场景3：创建寄存器模型](scenarios/03-create-regmodel.md) |
@@ -102,8 +102,8 @@ docs/
 
 ## 获取帮助
 
-- 📧 [问题反馈](https://github.com/EdaerCoser/EDA_UFMV/issues) - 报告bug或功能请求
-- 💬 [讨论区](https://github.com/EdaerCoser/EDA_UFMV/discussions) - 交流使用经验
+- 📧 [问题反馈](https://github.com/EdaerCoser/EDA_UFVM/issues) - 报告bug或功能请求
+- 💬 [讨论区](https://github.com/EdaerCoser/EDA_UFVM/discussions) - 交流使用经验
 - 📖 [完整文档](../README.md) - 返回项目主页
 
 ---

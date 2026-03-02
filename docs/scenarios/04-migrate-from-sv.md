@@ -13,7 +13,7 @@
 
 ## 1. 场景目标
 
-将现有的SystemVerilog验证环境迁移到EDA_UFMV Python环境。
+将现有的SystemVerilog验证环境迁移到EDA_UFVM Python环境。
 
 > "我有一个UVM验证环境，想逐步迁移到Python"
 

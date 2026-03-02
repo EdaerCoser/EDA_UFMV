@@ -2,7 +2,7 @@
 
 **版本**: v0.1.0
 **最后更新**: 2026年3月1日
-**项目**: EDA_UFMV
+**项目**: EDA_UFVM
 
 ---
 
@@ -392,11 +392,11 @@ runner.py (主入口)
 
 ## 📞 联系方式
 
-- **项目主页**: <https://github.com/EdaerCoser/EDA_UFMV>
-- **问题反馈**: <https://github.com/EdaerCoser/EDA_UFMV/issues>
-- **讨论区**: <https://github.com/EdaerCoser/EDA_UFMV/discussions>
+- **项目主页**: <https://github.com/EdaerCoser/EDA_UFVM>
+- **问题反馈**: <https://github.com/EdaerCoser/EDA_UFVM/issues>
+- **讨论区**: <https://github.com/EdaerCoser/EDA_UFVM/discussions>
 
 ---
 
 **最后更新**: 2026年3月1日
-**维护者**: EDA_UFMV开发团队
+**维护者**: EDA_UFVM开发团队

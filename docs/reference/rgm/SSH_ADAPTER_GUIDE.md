@@ -7,7 +7,7 @@
 
 ## 概述
 
-SSHAdapter是EDA_UFMV RGM提供的硬件适配器，用于通过SSH协议远程访问FPGA单板的寄存器。它特别适用于：
+SSHAdapter是EDA_UFVM RGM提供的硬件适配器，用于通过SSH协议远程访问FPGA单板的寄存器。它特别适用于：
 
 - **远程FPGA板卡** - 通过网络访问实验室或数据中心板卡
 - **嵌入式Linux系统** - 访问运行Linux的SoC板卡
@@ -509,5 +509,5 @@ if __name__ == "__main__":
 
 ---
 
-**文档维护**: EDA_UFMV开发团队
+**文档维护**: EDA_UFVM开发团队
 **最后更新**: 2026年3月1日

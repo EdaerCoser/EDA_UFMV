@@ -1,6 +1,6 @@
 # RGM 寄存器模型文档
 
-本目录包含EDA_UFMV RGM (Register Model) 系统的详细文档。
+本目录包含EDA_UFVM RGM (Register Model) 系统的详细文档。
 
 ## 文档列表
 
@@ -34,5 +34,5 @@
 
 ---
 
-**维护者**: EDA_UFMV开发团队
+**维护者**: EDA_UFVM开发团队
 **最后更新**: 2026年3月1日

@@ -1,6 +1,6 @@
 # RGM 寄存器模型示例
 
-本目录包含EDA_UFMV RGM (Register Model) 系统的使用示例。
+本目录包含EDA_UFVM RGM (Register Model) 系统的使用示例。
 
 ## 示例列表
 

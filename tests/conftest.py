@@ -1,5 +1,5 @@
 """
-Global pytest configuration and shared fixtures for EDA_UFMV tests.
+Global pytest configuration and shared fixtures for EDA_UFVM tests.
 
 This file provides common fixtures and configuration for all test modules:
 - Coverage system fixtures

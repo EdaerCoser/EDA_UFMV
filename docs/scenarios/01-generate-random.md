@@ -23,7 +23,7 @@
 
 如果你熟悉SystemVerilog，这相当于：
 
-| SystemVerilog | Python (EDA_UFMV) | 说明 |
+| SystemVerilog | Python (EDA_UFVM) | 说明 |
 |---------------|-------------------|------|
 | `rand int x;` | `x: rand(int)(bits=32)` | 随机变量声明 |
 | `randc bit [3:0] id;` | `id: randc(int)(bits=4)` | 循环随机变量 |

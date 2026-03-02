@@ -1,4 +1,4 @@
-"""Setup configuration for EDA_UFMV"""
+"""Setup configuration for EDA_UFVM"""
 
 from setuptools import setup, find_packages
 
@@ -8,12 +8,12 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="eda-ufmv",
     version="0.3.0",
-    author="EDA_UFMV Team",
+    author="EDA_UFVM Team",
     author_email="support@eda-ufmv.org",
     description="Universal Verification Framework for FPGA/Prototype Verification",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/EdaerCoser/EDA_UFMV",
+    url="https://github.com/EdaerCoser/EDA_UFVM",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",

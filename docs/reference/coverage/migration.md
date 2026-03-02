@@ -2,7 +2,7 @@
 
 **版本**: v0.2.0
 **更新日期**: 2026年3月1日
-**目标读者**: 从SystemVerilog迁移到EDA_UFMV的验证工程师
+**目标读者**: 从SystemVerilog迁移到EDA_UFVM的验证工程师
 
 ---
 
@@ -10,11 +10,11 @@
 
 ### 1.1 文档目的
 
-本文档帮助熟悉SystemVerilog覆盖率的验证工程师快速掌握EDA_UFMV的Python覆盖率系统。通过SystemVerilog与Python语法的对照对比，理解如何在Python中实现相同的功能覆盖率功能。
+本文档帮助熟悉SystemVerilog覆盖率的验证工程师快速掌握EDA_UFVM的Python覆盖率系统。通过SystemVerilog与Python语法的对照对比，理解如何在Python中实现相同的功能覆盖率功能。
 
 ### 1.2 覆盖率系统架构
 
-EDA_UFMV的覆盖率系统是独立顶层模块（`coverage/`），提供SystemVerilog风格的API：
+EDA_UFVM的覆盖率系统是独立顶层模块（`coverage/`），提供SystemVerilog风格的API：
 
 ```
 coverage/
@@ -26,7 +26,7 @@ coverage/
 
 ### 1.3 SystemVerilog vs Python核心差异
 
-| 特性 | SystemVerilog | Python (EDA_UFMV) |
+| 特性 | SystemVerilog | Python (EDA_UFVM) |
 |:---|:---|:---|
 | **类型系统** | 静态类型，需指定位宽 | 动态类型，自动处理 |
 | **采样表达式** | 直接引用变量 | `sample_expr="var"` 或 callable |
@@ -1170,7 +1170,7 @@ A: 根据场景选择：
 
 ## 参考资源
 
-- **项目主页**: https://github.com/EdaerCoser/EDA_UFMV
+- **项目主页**: https://github.com/EdaerCoser/EDA_UFVM
 - **覆盖率README**: [coverage/README.md](../../coverage/README.md)
 - **基础示例**: [examples/coverage/basic_coverage.py](../../examples/coverage/basic_coverage.py)
 - **高级示例**: [examples/coverage/advanced_coverage.py](../../examples/coverage/advanced_coverage.py)
@@ -1181,4 +1181,4 @@ A: 根据场景选择：
 
 **文档版本**: v0.2.0
 **最后更新**: 2026年3月1日
-**维护者**: EDA_UFMV开发团队
+**维护者**: EDA_UFVM开发团队

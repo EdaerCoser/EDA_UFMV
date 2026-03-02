@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Comprehensive Test Runner for EDA_UFMV
+Comprehensive Test Runner for EDA_UFVM
 
 Runs all tests with proper environment configuration.
 Disables pytest-qt plugin to avoid Windows DLL loading issues.
@@ -29,7 +29,7 @@ def main():
     project_dir = Path(__file__).parent.absolute()
     os.chdir(project_dir)
 
-    print(f"EDA_UFMV Test Suite")
+    print(f"EDA_UFVM Test Suite")
     print(f"Working directory: {project_dir}")
     print(f"Python version: {sys.version}")
 

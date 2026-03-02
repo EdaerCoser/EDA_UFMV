@@ -1,14 +1,14 @@
-# EDA_UFMV 开发路线图
+# EDA_UFVM 开发路线图
 
 **文档版本**: v1.0
 **最后更新**: 2026年3月1日
-**项目地址**: https://github.com/EdaerCoser/EDA_UFMV
+**项目地址**: https://github.com/EdaerCoser/EDA_UFVM
 
 ---
 
 ## 版本规划概览
 
-EDA_UFMV采用分阶段迭代开发策略，每个版本都有明确的功能目标和里程碑。
+EDA_UFVM采用分阶段迭代开发策略，每个版本都有明确的功能目标和里程碑。
 
 ```
 v0.1.0 ────► v0.2.0 ────► v0.3.0 ────► v0.4.0 ────► v0.5.0 ────► v1.0.0
@@ -633,9 +633,9 @@ v1.0.0 (完整平台)
 
 ## 联系方式
 
-- **项目主页**: https://github.com/EdaerCoser/EDA_UFMV
-- **问题反馈**: https://github.com/EdaerCoser/EDA_UFMV/issues
-- **讨论区**: https://github.com/EdaerCoser/EDA_UFMV/discussions
+- **项目主页**: https://github.com/EdaerCoser/EDA_UFVM
+- **问题反馈**: https://github.com/EdaerCoser/EDA_UFVM/issues
+- **讨论区**: https://github.com/EdaerCoser/EDA_UFVM/discussions
 
 ---
 
@@ -666,4 +666,4 @@ v1.0.0 (完整平台)
 
 **路线图最后更新**: 2026年3月1日
 **下次审查**: v0.2.0开发启动时
-**维护者**: EDA_UFMV开发团队
+**维护者**: EDA_UFVM开发团队

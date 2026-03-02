@@ -1,7 +1,7 @@
 """
 Basic Coverage Example - 功能覆盖率基础示例
 
-这个示例展示了如何使用EDA_UFMV的覆盖率系统来验证随机化测试的覆盖范围。
+这个示例展示了如何使用EDA_UFVM的覆盖率系统来验证随机化测试的覆盖范围。
 
 对应SystemVerilog的covergroup和coverpoint概念。
 """
@@ -82,7 +82,7 @@ def main():
     """主测试函数"""
 
     print("=" * 60)
-    print("EDA_UFMV 功能覆盖率系统 - 基础示例")
+    print("EDA_UFVM 功能覆盖率系统 - 基础示例")
     print("=" * 60)
 
     # 创建数据包对象
